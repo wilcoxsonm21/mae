@@ -7,12 +7,11 @@ device: "cuda"  # or "cpu"
 
 # Model configuration
 model:
-  type: "mlp_ae"  # Options: "mlp_ae", "mlp_mae"
+  type: "unet_ae"  # Options: "unet_ae", "unet_mae"
   params:
-    # input_dim is automatically set from dataset
-    latent_dim: 32
-    hidden_dims: [512, 256, 128]
-    activation: "relu"  # Options: "relu", "tanh", "sigmoid"
+    # input_dim and image_size are automatically set from dataset
+    latent_dim: 128
+    base_channels: 64  # Base number of channels (doubles each downsampling)
     dropout: 0.0
 
 # Training objective
@@ -22,19 +21,43 @@ objective:
     loss_type: "mse"  # Options: "mse", "l1", "smooth_l1"
     reduction: "mean"  # Options: "mean", "sum"
 
-# Dataset configuration
+# Dataset configuration - 2D Image Patterns
 dataset:
-  dataset_name: "gaussian_mixture"  # Options: "gaussian_mixture", "swiss_roll", "s_curve", "concentric_circles", "uniform"
+  dataset_name: "fourier_grid"
+  # Options: "fourier_grid", "checkerboard", "radial", "gabor", "random_fourier", "noise"
   n_samples: 10000
-  input_dim: 64
+  image_size: 32  # Size of square images (32x32 = 1024 input dim)
   train_split: 0.8
   batch_size: 128
   normalize: true
   random_state: 42
-  # Additional dataset-specific params
-  n_components: 5  # for gaussian_mixture
-  # n_circles: 3  # for concentric_circles
-  # noise: 0.1  # for swiss_roll, s_curve
+
+  # Dataset-specific parameters:
+  # For fourier_grid:
+  max_freq: 8
+  n_frequencies: 3
+  orientation: "mixed"  # "horizontal", "vertical", "diagonal", or "mixed"
+  noise_level: 0.01
+
+  # For checkerboard:
+  # grid_sizes: [2, 4, 8, 16]
+  # noise_level: 0.01
+
+  # For radial:
+  # n_circles: 3
+  # noise_level: 0.01
+
+  # For gabor:
+  # n_components: 3
+  # noise_level: 0.01
+
+  # For random_fourier:
+  # n_frequencies: 10
+  # max_freq: 16  # or null for image_size//2
+  # noise_level: 0.01
+
+  # For noise:
+  # noise_type: "gaussian"  # or "uniform"
 
 # Optimizer configuration
 optimizer:

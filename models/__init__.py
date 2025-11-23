@@ -1,4 +1,4 @@
-from .mlp_ae import MLPAE
-from .mlp_mae import MLPMAE
+from .unet_ae import UNetAE
+from .unet_mae import UNetMAE
 
-__all__ = ['MLPAE', 'MLPMAE']
+__all__ = ['UNetAE', 'UNetMAE']

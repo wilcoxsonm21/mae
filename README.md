@@ -319,7 +319,7 @@ The framework includes a powerful sweep system that allows you to run experiment
 3. **Run the sweep**
 
 ```bash
-python sweep.py --config configs/default.yaml \
+python sweep.py --config configs/examples/ae_synthetic.yaml \
                 --sweep-config configs/sweeps/latent_dim_sweep.yaml \
                 --plot
 ```
