@@ -1,0 +1,19 @@
+Loading dataset...
+Dataset loaded: input_dim=64
+Creating model...
+Model: mlp_ae
+Total parameters: 403,296
+Objective: reconstruction
+{'type': 'adam', 'lr': 0.001, 'weight_decay': '1e-5'}
+Traceback (most recent call last):
+  File "/home/mwil/mae_ae_test/main.py", line 313, in <module>
+    main()
+  File "/home/mwil/mae_ae_test/main.py", line 309, in main
+    train(config, wandb_log=not args.no_wandb)
+  File "/home/mwil/mae_ae_test/main.py", line 188, in train
+    optimizer = optim.Adam(
+                ^^^^^^^^^^^
+  File "/home/mwil/miniconda3/envs/mae/lib/python3.12/site-packages/torch/optim/adam.py", line 66, in __init__
+    if not 0.0 <= weight_decay:
+           ^^^^^^^^^^^^^^^^^^^
+TypeError: '<=' not supported between instances of 'float' and 'str'

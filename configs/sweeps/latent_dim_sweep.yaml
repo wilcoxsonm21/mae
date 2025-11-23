@@ -1,0 +1,5 @@
+# Sweep configuration for latent dimension (quantitative)
+# This sweeps over different latent space dimensions to find the optimal size
+
+parameter: "model.params.latent_dim"
+values: [8, 16, 32, 64, 128]

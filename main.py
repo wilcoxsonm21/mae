@@ -1,0 +1,336 @@
+"""Main training script for autoencoders."""
+
+import os
+import argparse
+import yaml
+import torch
+import torch.optim as optim
+import wandb
+from pathlib import Path
+from tqdm import tqdm
+
+# Import models
+from models import MLPAE, MLPMAE
+
+# Import objectives
+from objectives import ReconstructionLoss, MaskedReconstructionLoss
+
+# Import data
+from data import get_dataset
+
+# Import evaluation
+from evaluation import Evaluator, log_visualizations_to_wandb
+
+
+def load_config(config_path):
+    """Load configuration from YAML file.
+
+    Args:
+        config_path: Path to YAML config file
+
+    Returns:
+        Dictionary of configuration parameters
+    """
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def get_model(config):
+    """Create model based on config.
+
+    Args:
+        config: Configuration dictionary
+
+    Returns:
+        Model instance
+    """
+    model_type = config['model']['type']
+    model_params = config['model']['params']
+
+    if model_type == 'mlp_ae':
+        model = MLPAE(**model_params)
+    elif model_type == 'mlp_mae':
+        model = MLPMAE(**model_params)
+    else:
+        raise ValueError(f"Unknown model type: {model_type}")
+
+    return model
+
+
+def get_objective(config):
+    """Create objective function based on config.
+
+    Args:
+        config: Configuration dictionary
+
+    Returns:
+        Objective instance
+    """
+    objective_type = config['objective']['type']
+    objective_params = config['objective']['params']
+
+    if objective_type == 'reconstruction':
+        objective = ReconstructionLoss(**objective_params)
+    elif objective_type == 'masked_reconstruction':
+        objective = MaskedReconstructionLoss(**objective_params)
+    else:
+        raise ValueError(f"Unknown objective type: {objective_type}")
+
+    return objective
+
+
+def train_epoch(model, train_loader, objective, optimizer, device, epoch, wandb_log=True):
+    """Train for one epoch.
+
+    Args:
+        model: Model to train
+        train_loader: Training data loader
+        objective: Objective function
+        optimizer: Optimizer
+        device: Device to train on
+        epoch: Current epoch number
+        wandb_log: Whether to log to wandb
+
+    Returns:
+        Average loss for the epoch
+    """
+    model.train()
+    total_loss = 0.0
+    total_samples = 0
+
+    pbar = tqdm(train_loader, desc=f"Epoch {epoch}")
+    for batch_idx, (data, target) in enumerate(pbar):
+        data = data.to(device)
+        target = target.to(device)
+        batch_size = data.size(0)
+
+        # Forward pass
+        optimizer.zero_grad()
+        model_output = model(data)
+        loss_output = objective(model_output, target)
+        loss = loss_output['loss']
+
+        # Backward pass
+        loss.backward()
+        optimizer.step()
+
+        # Track loss
+        total_loss += loss.item() * batch_size
+        total_samples += batch_size
+
+        # Update progress bar
+        pbar.set_postfix({'loss': f'{loss.item():.4f}'})
+
+        # Log to wandb
+        if wandb_log and batch_idx % 10 == 0:
+            wandb.log({
+                'train/batch_loss': loss.item(),
+                'epoch': epoch
+            })
+
+    avg_loss = total_loss / total_samples
+    return avg_loss
+
+
+def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_models'):
+    """Main training function.
+
+    Args:
+        config: Configuration dictionary
+        wandb_log: Whether to log to wandb
+        use_hash_dir: If True, save checkpoints using config hash in base_results_dir
+        base_results_dir: Base directory for hash-based results storage
+
+    Returns:
+        Dictionary containing final results
+    """
+    # Set random seed for reproducibility
+    seed = config.get('seed', 42)
+    torch.manual_seed(seed)
+
+    # Setup device
+    device = torch.device(config.get('device', 'cuda' if torch.cuda.is_available() else 'cpu'))
+    print(f"Using device: {device}")
+
+    # Initialize wandb
+    if wandb_log:
+        wandb.init(
+            project=config.get('wandb_project', 'autoencoder-training'),
+            name=config.get('experiment_name', None),
+            config=config
+        )
+
+    # Get dataset
+    print("Loading dataset...")
+    dataset_config = config['dataset']
+    data = get_dataset(**dataset_config)
+    train_loader = data['train_loader']
+    val_loader = data['val_loader']
+    input_dim = data['input_dim']
+    print(f"Dataset loaded: input_dim={input_dim}")
+
+    # Update model config with input_dim if not specified
+    if 'input_dim' not in config['model']['params']:
+        config['model']['params']['input_dim'] = input_dim
+
+    # Create model
+    print("Creating model...")
+    model = get_model(config)
+    model = model.to(device)
+    print(f"Model: {config['model']['type']}")
+    print(f"Total parameters: {sum(p.numel() for p in model.parameters()):,}")
+
+    # Create objective
+    objective = get_objective(config)
+    objective = objective.to(device)
+    print(f"Objective: {config['objective']['type']}")
+
+    # Create optimizer
+    optimizer_config = config.get('optimizer', {'type': 'adam', 'lr': 1e-3})
+    if optimizer_config['type'] == 'adam':
+        optimizer = optim.Adam(
+            model.parameters(),
+            lr=float(optimizer_config.get('lr', 1e-3)),
+            weight_decay=float(optimizer_config.get('weight_decay', 0.0))
+        )
+    elif optimizer_config['type'] == 'sgd':
+        optimizer = optim.SGD(
+            model.parameters(),
+            lr=float(optimizer_config.get('lr', 1e-3)),
+            momentum=float(optimizer_config.get('momentum', 0.9)),
+            weight_decay=float(optimizer_config.get('weight_decay', 0.0))
+        )
+    else:
+        raise ValueError(f"Unknown optimizer: {optimizer_config['type']}")
+
+    # Create evaluator
+    evaluator = Evaluator(model, device)
+
+    # Log initial visualizations
+    if wandb_log:
+        print("Creating initial visualizations...")
+        log_visualizations_to_wandb(model, train_loader, val_loader, device, step=0)
+
+    # Training loop
+    num_epochs = config.get('num_epochs', 100)
+    best_val_loss = float('inf')
+
+    # Determine checkpoint directory
+    if use_hash_dir:
+        from utils import get_experiment_dir
+        checkpoint_dir = get_experiment_dir(config, base_results_dir)
+    else:
+        checkpoint_dir = Path(config.get('checkpoint_dir', './checkpoints'))
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    # Visualization frequency (how often to log visualizations)
+    vis_freq = config.get('visualization_frequency', 10)
+
+    print(f"\nStarting training for {num_epochs} epochs...")
+    for epoch in range(1, num_epochs + 1):
+        # Train for one epoch
+        train_loss = train_epoch(
+            model, train_loader, objective, optimizer,
+            device, epoch, wandb_log=wandb_log
+        )
+
+        # Evaluate
+        eval_results = evaluator.evaluate_and_log(
+            train_loader, val_loader, objective,
+            wandb_logger=wandb if wandb_log else None,
+            step=epoch
+        )
+
+        val_loss = eval_results['val']['objective_loss']
+
+        # Print results
+        print(f"\nEpoch {epoch}/{num_epochs}:")
+        print(f"  Train Loss: {train_loss:.4f}")
+        print(f"  Val Loss: {val_loss:.4f}")
+        print(f"  Val Reconstruction (MSE): {eval_results['val']['reconstruction_loss_mse']:.4f}")
+
+        # Log visualizations periodically
+        if wandb_log and epoch % vis_freq == 0:
+            print(f"  Logging visualizations at epoch {epoch}...")
+            log_visualizations_to_wandb(model, train_loader, val_loader, device, step=epoch)
+
+        # Save best model
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            checkpoint_path = checkpoint_dir / 'best_model.pt'
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'val_loss': val_loss,
+                'config': config
+            }, checkpoint_path)
+            print(f"  Saved best model to {checkpoint_path}")
+
+    # Save final model
+    final_checkpoint_path = checkpoint_dir / 'final_model.pt'
+    torch.save({
+        'epoch': num_epochs,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'val_loss': val_loss,
+        'config': config
+    }, final_checkpoint_path)
+    print(f"\nTraining complete! Final model saved to {final_checkpoint_path}")
+
+    # Final evaluation
+    print("\nFinal Evaluation:")
+    final_results = evaluator.evaluate_and_log(
+        train_loader, val_loader, objective,
+        wandb_logger=wandb if wandb_log else None,
+        step=num_epochs
+    )
+
+    print("\nTrain Set:")
+    for metric, value in final_results['train'].items():
+        print(f"  {metric}: {value:.4f}")
+
+    print("\nValidation Set:")
+    for metric, value in final_results['val'].items():
+        print(f"  {metric}: {value:.4f}")
+
+    # Final visualizations
+    if wandb_log:
+        print("\nCreating final visualizations...")
+        log_visualizations_to_wandb(model, train_loader, val_loader, device, step=num_epochs)
+        wandb.finish()
+
+    # Save results using config hash if requested
+    if use_hash_dir:
+        from utils import save_results
+        save_results(
+            config,
+            final_results,
+            checkpoint_path,
+            final_checkpoint_path,
+            base_results_dir
+        )
+
+    return final_results
+
+
+def main():
+    """Main entry point."""
+    parser = argparse.ArgumentParser(description='Train autoencoder models')
+    parser.add_argument('--config', type=str, required=True,
+                       help='Path to configuration file')
+    parser.add_argument('--no-wandb', action='store_true',
+                       help='Disable wandb logging')
+
+    args = parser.parse_args()
+
+    # Load config
+    config = load_config(args.config)
+
+    # Train
+    train(config, wandb_log=not args.no_wandb)
+
+
+if __name__ == '__main__':
+    main()

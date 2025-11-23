@@ -1,0 +1,48 @@
+# Example configuration for Masked Autoencoder on synthetic data
+
+experiment_name: "mlp_mae_concentric_circles"
+seed: 42
+device: "cuda"
+
+# MLP Masked Autoencoder
+model:
+  type: "mlp_mae"
+  params:
+    latent_dim: 16
+    hidden_dims: [256, 128, 64]
+    activation: "relu"
+    dropout: 0.0
+    mask_ratio: 0.5  # Mask 50% of input features
+
+# Masked reconstruction loss
+objective:
+  type: "masked_reconstruction"
+  params:
+    loss_type: "mse"
+    reduction: "mean"
+    predict_all: false  # Only compute loss on masked positions
+
+# Concentric circles dataset
+dataset:
+  dataset_name: "concentric_circles"
+  n_samples: 15000
+  input_dim: 32
+  train_split: 0.8
+  batch_size: 256
+  normalize: true
+  random_state: 42
+  n_circles: 5
+
+# Adam optimizer with higher learning rate for MAE
+optimizer:
+  type: "adam"
+  lr: 0.003
+  weight_decay: 0.0
+
+# Training settings
+num_epochs: 150
+checkpoint_dir: "./checkpoints/mae_circles"
+visualization_frequency: 15  # Log visualizations every N epochs
+
+# Wandb
+wandb_project: "autoencoder-training"

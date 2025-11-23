@@ -1,0 +1,23 @@
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_setup.py:_flush():80] Current SDK version is 0.23.0
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_setup.py:_flush():80] Configure stats pid to 3756691
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_setup.py:_flush():80] Loading settings from /home/mwil/.config/wandb/settings
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_setup.py:_flush():80] Loading settings from /home/mwil/mae_ae_test/wandb/settings
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_setup.py:_flush():80] Loading settings from environment variables
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_init.py:setup_run_log_directory():713] Logging user logs to /home/mwil/mae_ae_test/wandb/run-20251122_150715-tyue2nva/logs/debug.log
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_init.py:setup_run_log_directory():714] Logging internal logs to /home/mwil/mae_ae_test/wandb/run-20251122_150715-tyue2nva/logs/debug-internal.log
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_init.py:init():840] calling init triggers
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_init.py:init():845] wandb.init called with sweep_config: {}
+config: {'experiment_name': 'mlp_ae_gaussian_mixture', 'seed': 42, 'device': 'cuda', 'model': {'type': 'mlp_ae', 'params': {'latent_dim': 32, 'hidden_dims': [512, 256, 128], 'activation': 'relu', 'dropout': 0.1}}, 'objective': {'type': 'reconstruction', 'params': {'loss_type': 'mse', 'reduction': 'mean'}}, 'dataset': {'dataset_name': 'gaussian_mixture', 'n_samples': 20000, 'input_dim': 64, 'train_split': 0.8, 'batch_size': 128, 'normalize': True, 'random_state': 42, 'n_components': 8}, 'optimizer': {'type': 'adam', 'lr': 0.001, 'weight_decay': '1e-5'}, 'num_epochs': 100, 'checkpoint_dir': './checkpoints/ae_gaussian', 'visualization_frequency': 10, 'wandb_project': 'autoencoder-training', '_wandb': {}}
+2025-11-22 15:07:15,384 INFO    MainThread:3756691 [wandb_init.py:init():888] starting backend
+2025-11-22 15:07:15,592 INFO    MainThread:3756691 [wandb_init.py:init():891] sending inform_init request
+2025-11-22 15:07:15,594 INFO    MainThread:3756691 [wandb_init.py:init():899] backend started and connected
+2025-11-22 15:07:15,595 INFO    MainThread:3756691 [wandb_init.py:init():969] updated telemetry
+2025-11-22 15:07:15,595 INFO    MainThread:3756691 [wandb_init.py:init():993] communicating run to backend with 90.0 second timeout
+2025-11-22 15:07:16,242 INFO    MainThread:3756691 [wandb_init.py:init():1040] starting run threads in backend
+2025-11-22 15:07:16,259 INFO    MainThread:3756691 [wandb_run.py:_console_start():2504] atexit reg
+2025-11-22 15:07:16,259 INFO    MainThread:3756691 [wandb_run.py:_redirect():2352] redirect: wrap_raw
+2025-11-22 15:07:16,259 INFO    MainThread:3756691 [wandb_run.py:_redirect():2421] Wrapping output streams.
+2025-11-22 15:07:16,259 INFO    MainThread:3756691 [wandb_run.py:_redirect():2444] Redirects installed.
+2025-11-22 15:07:16,259 INFO    MainThread:3756691 [wandb_init.py:init():1080] run started, returning control to user process
+2025-11-22 15:07:16,401 INFO    wandb-AsyncioManager-main:3756691 [service_client.py:_forward_responses():80] Reached EOF.
+2025-11-22 15:07:16,401 INFO    wandb-AsyncioManager-main:3756691 [mailbox.py:close():137] Closing mailbox, abandoning 2 handles.

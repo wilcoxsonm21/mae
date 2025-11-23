@@ -1,0 +1,5 @@
+# Sweep configuration for activation function (categorical)
+# This sweeps over different activation functions
+
+parameter: "model.params.activation"
+values: ["relu", "tanh", "sigmoid"]

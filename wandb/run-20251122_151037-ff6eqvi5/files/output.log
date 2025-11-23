@@ -1,0 +1,797 @@
+Loading dataset...
+Dataset loaded: input_dim=64
+Creating model...
+Model: mlp_ae
+Total parameters: 411,520
+Objective: reconstruction
+Creating initial visualizations...
+
+Starting training for 100 epochs...
+Epoch 1: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 666.56it/s, loss=0.1417]
+
+Epoch 1/100:
+  Train Loss: 0.2592
+  Val Loss: 0.1266
+  Val Reconstruction (MSE): 0.1266
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 2: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 914.71it/s, loss=0.1400]
+
+Epoch 2/100:
+  Train Loss: 0.1397
+  Val Loss: 0.1238
+  Val Reconstruction (MSE): 0.1238
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 3: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 906.49it/s, loss=0.1272]
+
+Epoch 3/100:
+  Train Loss: 0.1338
+  Val Loss: 0.1222
+  Val Reconstruction (MSE): 0.1222
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 4: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 910.77it/s, loss=0.1289]
+
+Epoch 4/100:
+  Train Loss: 0.1296
+  Val Loss: 0.1208
+  Val Reconstruction (MSE): 0.1208
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 5: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 907.76it/s, loss=0.1256]
+
+Epoch 5/100:
+  Train Loss: 0.1263
+  Val Loss: 0.1176
+  Val Reconstruction (MSE): 0.1176
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 6: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 907.19it/s, loss=0.1158]
+
+Epoch 6/100:
+  Train Loss: 0.1234
+  Val Loss: 0.1140
+  Val Reconstruction (MSE): 0.1140
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 7: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 905.79it/s, loss=0.1187]
+
+Epoch 7/100:
+  Train Loss: 0.1206
+  Val Loss: 0.1114
+  Val Reconstruction (MSE): 0.1114
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 8: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 962.31it/s, loss=0.1183]
+
+Epoch 8/100:
+  Train Loss: 0.1177
+  Val Loss: 0.1089
+  Val Reconstruction (MSE): 0.1089
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 9: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 963.13it/s, loss=0.1129]
+
+Epoch 9/100:
+  Train Loss: 0.1155
+  Val Loss: 0.1069
+  Val Reconstruction (MSE): 0.1069
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 10: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 982.13it/s, loss=0.1119]
+
+Epoch 10/100:
+  Train Loss: 0.1137
+  Val Loss: 0.1050
+  Val Reconstruction (MSE): 0.1050
+  Logging visualizations at epoch 10...
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 11: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 955.92it/s, loss=0.1131]
+
+Epoch 11/100:
+  Train Loss: 0.1118
+  Val Loss: 0.1042
+  Val Reconstruction (MSE): 0.1042
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 12: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 962.64it/s, loss=0.1144]
+
+Epoch 12/100:
+  Train Loss: 0.1106
+  Val Loss: 0.1027
+  Val Reconstruction (MSE): 0.1027
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 13: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 945.81it/s, loss=0.1098]
+
+Epoch 13/100:
+  Train Loss: 0.1097
+  Val Loss: 0.1019
+  Val Reconstruction (MSE): 0.1019
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 14: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 897.95it/s, loss=0.1104]
+
+Epoch 14/100:
+  Train Loss: 0.1091
+  Val Loss: 0.1016
+  Val Reconstruction (MSE): 0.1016
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 15: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 896.74it/s, loss=0.1083]
+
+Epoch 15/100:
+  Train Loss: 0.1084
+  Val Loss: 0.1010
+  Val Reconstruction (MSE): 0.1010
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 16: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 922.54it/s, loss=0.1105]
+
+Epoch 16/100:
+  Train Loss: 0.1077
+  Val Loss: 0.1003
+  Val Reconstruction (MSE): 0.1003
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 17: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 955.79it/s, loss=0.1051]
+
+Epoch 17/100:
+  Train Loss: 0.1069
+  Val Loss: 0.0993
+  Val Reconstruction (MSE): 0.0993
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 18: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 961.36it/s, loss=0.1084]
+
+Epoch 18/100:
+  Train Loss: 0.1064
+  Val Loss: 0.0987
+  Val Reconstruction (MSE): 0.0987
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 19: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 978.10it/s, loss=0.1082]
+
+Epoch 19/100:
+  Train Loss: 0.1060
+  Val Loss: 0.0991
+  Val Reconstruction (MSE): 0.0991
+Epoch 20: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 960.29it/s, loss=0.1090]
+
+Epoch 20/100:
+  Train Loss: 0.1058
+  Val Loss: 0.0986
+  Val Reconstruction (MSE): 0.0986
+  Logging visualizations at epoch 20...
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 21: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 944.56it/s, loss=0.1059]
+
+Epoch 21/100:
+  Train Loss: 0.1052
+  Val Loss: 0.0981
+  Val Reconstruction (MSE): 0.0981
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 22: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 956.50it/s, loss=0.1015]
+
+Epoch 22/100:
+  Train Loss: 0.1043
+  Val Loss: 0.0974
+  Val Reconstruction (MSE): 0.0974
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 23: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 959.56it/s, loss=0.1045]
+
+Epoch 23/100:
+  Train Loss: 0.1038
+  Val Loss: 0.0963
+  Val Reconstruction (MSE): 0.0963
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 24: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 893.88it/s, loss=0.1022]
+
+Epoch 24/100:
+  Train Loss: 0.1027
+  Val Loss: 0.0953
+  Val Reconstruction (MSE): 0.0953
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 25: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 915.44it/s, loss=0.1004]
+
+Epoch 25/100:
+  Train Loss: 0.1019
+  Val Loss: 0.0941
+  Val Reconstruction (MSE): 0.0941
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 26: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 948.26it/s, loss=0.1085]
+
+Epoch 26/100:
+  Train Loss: 0.1022
+  Val Loss: 0.0940
+  Val Reconstruction (MSE): 0.0940
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 27: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 943.59it/s, loss=0.0992]
+
+Epoch 27/100:
+  Train Loss: 0.1014
+  Val Loss: 0.0938
+  Val Reconstruction (MSE): 0.0938
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 28: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 895.20it/s, loss=0.1007]
+
+Epoch 28/100:
+  Train Loss: 0.1001
+  Val Loss: 0.0923
+  Val Reconstruction (MSE): 0.0923
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 29: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 897.73it/s, loss=0.0979]
+
+Epoch 29/100:
+  Train Loss: 0.0995
+  Val Loss: 0.0924
+  Val Reconstruction (MSE): 0.0924
+Epoch 30: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 893.06it/s, loss=0.0961]
+
+Epoch 30/100:
+  Train Loss: 0.0986
+  Val Loss: 0.0910
+  Val Reconstruction (MSE): 0.0910
+  Logging visualizations at epoch 30...
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 31:  71%|█████████████████████████████████▍             | 89/125 [00:00<00:00, 881.93it/s, loss=0.1094][34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 1 that is less than the current step 13. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 2 that is less than the current step 26. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 3 that is less than the current step 39. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 4 that is less than the current step 52. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 5 that is less than the current step 65. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 6 that is less than the current step 78. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 7 that is less than the current step 91. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 8 that is less than the current step 104. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 9 that is less than the current step 117. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 10 that is less than the current step 130. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 11 that is less than the current step 143. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 12 that is less than the current step 156. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 13 that is less than the current step 169. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 14 that is less than the current step 182. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 15 that is less than the current step 195. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 16 that is less than the current step 208. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 17 that is less than the current step 221. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 18 that is less than the current step 234. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 19 that is less than the current step 247. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 20 that is less than the current step 260. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 21 that is less than the current step 273. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Epoch 31:  71%|█████████████████████████████████▍             | 89/125 [00:00<00:00, 881.93it/s, loss=0.1008][34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 22 that is less than the current step 286. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 23 that is less than the current step 299. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 24 that is less than the current step 312. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 25 that is less than the current step 325. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 26 that is less than the current step 338. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 27 that is less than the current step 351. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 28 that is less than the current step 364. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 29 that is less than the current step 377. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 30 that is less than the current step 390. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Epoch 31: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 862.20it/s, loss=0.1008]
+
+Epoch 31/100:
+  Train Loss: 0.0986
+  Val Loss: 0.0922
+  Val Reconstruction (MSE): 0.0922
+Epoch 32: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 956.79it/s, loss=0.0976]
+
+Epoch 32/100:
+  Train Loss: 0.0990
+  Val Loss: 0.0907
+  Val Reconstruction (MSE): 0.0907
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 33: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 962.72it/s, loss=0.0988]
+
+Epoch 33/100:
+  Train Loss: 0.0977
+  Val Loss: 0.0902
+  Val Reconstruction (MSE): 0.0902
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 34: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 955.66it/s, loss=0.0982]
+
+Epoch 34/100:
+  Train Loss: 0.0969
+  Val Loss: 0.0888
+  Val Reconstruction (MSE): 0.0888
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 35: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 941.49it/s, loss=0.0970]
+
+Epoch 35/100:
+  Train Loss: 0.0974
+  Val Loss: 0.0923
+  Val Reconstruction (MSE): 0.0923
+Epoch 36: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 913.83it/s, loss=0.0959]
+
+Epoch 36/100:
+  Train Loss: 0.0973
+  Val Loss: 0.0877
+  Val Reconstruction (MSE): 0.0877
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 37: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 961.91it/s, loss=0.1000]
+
+Epoch 37/100:
+  Train Loss: 0.0965
+  Val Loss: 0.0901
+  Val Reconstruction (MSE): 0.0901
+Epoch 38: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 941.60it/s, loss=0.0958]
+
+Epoch 38/100:
+  Train Loss: 0.0958
+  Val Loss: 0.0873
+  Val Reconstruction (MSE): 0.0873
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 39: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 952.66it/s, loss=0.0979]
+
+Epoch 39/100:
+  Train Loss: 0.0947
+  Val Loss: 0.0868
+  Val Reconstruction (MSE): 0.0868
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 40: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 970.65it/s, loss=0.0947]
+
+Epoch 40/100:
+  Train Loss: 0.0942
+  Val Loss: 0.0863
+  Val Reconstruction (MSE): 0.0863
+  Logging visualizations at epoch 40...
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 41: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 931.68it/s, loss=0.0940]
+
+Epoch 41/100:
+  Train Loss: 0.0954
+  Val Loss: 0.0865
+  Val Reconstruction (MSE): 0.0865
+Epoch 42: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 948.05it/s, loss=0.0950]
+
+Epoch 42/100:
+  Train Loss: 0.0945
+  Val Loss: 0.0862
+  Val Reconstruction (MSE): 0.0862
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 43: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 938.53it/s, loss=0.0900]
+
+Epoch 43/100:
+  Train Loss: 0.0946
+  Val Loss: 0.0849
+  Val Reconstruction (MSE): 0.0849
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 44: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 944.56it/s, loss=0.0941]
+
+Epoch 44/100:
+  Train Loss: 0.0934
+  Val Loss: 0.0841
+  Val Reconstruction (MSE): 0.0841
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 45: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 941.69it/s, loss=0.0925]
+
+Epoch 45/100:
+  Train Loss: 0.0932
+  Val Loss: 0.0849
+  Val Reconstruction (MSE): 0.0849
+Epoch 46: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 894.79it/s, loss=0.0955]
+
+Epoch 46/100:
+  Train Loss: 0.0931
+  Val Loss: 0.0843
+  Val Reconstruction (MSE): 0.0843
+Epoch 47: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 931.34it/s, loss=0.0912]
+
+Epoch 47/100:
+  Train Loss: 0.0930
+  Val Loss: 0.0838
+  Val Reconstruction (MSE): 0.0838
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 48: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 884.16it/s, loss=0.0925]
+
+Epoch 48/100:
+  Train Loss: 0.0920
+  Val Loss: 0.0834
+  Val Reconstruction (MSE): 0.0834
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 49: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 883.39it/s, loss=0.0902]
+
+Epoch 49/100:
+  Train Loss: 0.0924
+  Val Loss: 0.0837
+  Val Reconstruction (MSE): 0.0837
+Epoch 50: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 882.84it/s, loss=0.0954]
+
+Epoch 50/100:
+  Train Loss: 0.0910
+  Val Loss: 0.0835
+  Val Reconstruction (MSE): 0.0835
+  Logging visualizations at epoch 50...
+Epoch 51: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 877.72it/s, loss=0.0898]
+
+Epoch 51/100:
+  Train Loss: 0.0912
+  Val Loss: 0.0822
+  Val Reconstruction (MSE): 0.0822
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 52: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 886.37it/s, loss=0.0895]
+
+Epoch 52/100:
+  Train Loss: 0.0906
+  Val Loss: 0.0826
+  Val Reconstruction (MSE): 0.0826
+Epoch 53: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 886.27it/s, loss=0.0895]
+
+Epoch 53/100:
+  Train Loss: 0.0904
+  Val Loss: 0.0821
+  Val Reconstruction (MSE): 0.0821
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 54: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 885.93it/s, loss=0.0902]
+
+Epoch 54/100:
+  Train Loss: 0.0913
+  Val Loss: 0.0819
+  Val Reconstruction (MSE): 0.0819
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 55: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 886.13it/s, loss=0.0880]
+
+Epoch 55/100:
+  Train Loss: 0.0916
+  Val Loss: 0.0827
+  Val Reconstruction (MSE): 0.0827
+Epoch 56: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 883.03it/s, loss=0.0904]
+
+Epoch 56/100:
+  Train Loss: 0.0903
+  Val Loss: 0.0818
+  Val Reconstruction (MSE): 0.0818
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 57: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 890.91it/s, loss=0.0878]
+
+Epoch 57/100:
+  Train Loss: 0.0894
+  Val Loss: 0.0809
+  Val Reconstruction (MSE): 0.0809
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 58: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 888.32it/s, loss=0.0905]
+
+Epoch 58/100:
+  Train Loss: 0.0901
+  Val Loss: 0.0818
+  Val Reconstruction (MSE): 0.0818
+Epoch 59: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 888.29it/s, loss=0.0879]
+
+Epoch 59/100:
+  Train Loss: 0.0902
+  Val Loss: 0.0817
+  Val Reconstruction (MSE): 0.0817
+Epoch 60: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 924.64it/s, loss=0.0921]
+
+Epoch 60/100:
+  Train Loss: 0.0910
+  Val Loss: 0.0815
+  Val Reconstruction (MSE): 0.0815
+  Logging visualizations at epoch 60...
+Epoch 61: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 919.87it/s, loss=0.0905]
+
+Epoch 61/100:
+  Train Loss: 0.0892
+  Val Loss: 0.0811
+  Val Reconstruction (MSE): 0.0811
+Epoch 62: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 918.20it/s, loss=0.0881]
+
+Epoch 62/100:
+  Train Loss: 0.0916
+  Val Loss: 0.0809
+  Val Reconstruction (MSE): 0.0809
+Epoch 63: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 882.85it/s, loss=0.0906]
+
+Epoch 63/100:
+  Train Loss: 0.0890
+  Val Loss: 0.0799
+  Val Reconstruction (MSE): 0.0799
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 64: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 890.63it/s, loss=0.0884]
+
+Epoch 64/100:
+  Train Loss: 0.0884
+  Val Loss: 0.0803
+  Val Reconstruction (MSE): 0.0803
+Epoch 65: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 895.01it/s, loss=0.0891]
+
+Epoch 65/100:
+  Train Loss: 0.0894
+  Val Loss: 0.0822
+  Val Reconstruction (MSE): 0.0822
+Epoch 66: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 894.65it/s, loss=0.0887]
+
+Epoch 66/100:
+  Train Loss: 0.0898
+  Val Loss: 0.0800
+  Val Reconstruction (MSE): 0.0800
+Epoch 67: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 884.65it/s, loss=0.0880]
+
+Epoch 67/100:
+  Train Loss: 0.0887
+  Val Loss: 0.0811
+  Val Reconstruction (MSE): 0.0811
+Epoch 68: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 889.08it/s, loss=0.0847]
+
+Epoch 68/100:
+  Train Loss: 0.0882
+  Val Loss: 0.0789
+  Val Reconstruction (MSE): 0.0789
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 69:   0%|                                                         | 0/125 [00:00<?, ?it/s, loss=0.0854][34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 31 that is less than the current step 403. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 32 that is less than the current step 416. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 33 that is less than the current step 429. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 34 that is less than the current step 442. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 35 that is less than the current step 455. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 36 that is less than the current step 468. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 37 that is less than the current step 481. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 38 that is less than the current step 494. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 39 that is less than the current step 507. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 40 that is less than the current step 520. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 41 that is less than the current step 533. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 42 that is less than the current step 546. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 43 that is less than the current step 559. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 44 that is less than the current step 572. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 45 that is less than the current step 585. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 46 that is less than the current step 598. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 47 that is less than the current step 611. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 48 that is less than the current step 624. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 49 that is less than the current step 637. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 50 that is less than the current step 650. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 51 that is less than the current step 663. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 52 that is less than the current step 676. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 53 that is less than the current step 689. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 54 that is less than the current step 702. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 55 that is less than the current step 715. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 56 that is less than the current step 728. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 57 that is less than the current step 741. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 58 that is less than the current step 754. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 59 that is less than the current step 767. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 60 that is less than the current step 780. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 61 that is less than the current step 793. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 62 that is less than the current step 806. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 63 that is less than the current step 819. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 64 that is less than the current step 832. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 65 that is less than the current step 845. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 66 that is less than the current step 858. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 67 that is less than the current step 871. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 68 that is less than the current step 884. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+Epoch 69: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 895.29it/s, loss=0.0908]
+
+Epoch 69/100:
+  Train Loss: 0.0873
+  Val Loss: 0.0793
+  Val Reconstruction (MSE): 0.0793
+Epoch 70: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 891.68it/s, loss=0.0880]
+
+Epoch 70/100:
+  Train Loss: 0.0875
+  Val Loss: 0.0790
+  Val Reconstruction (MSE): 0.0790
+  Logging visualizations at epoch 70...
+Epoch 71: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 876.63it/s, loss=0.0910]
+
+Epoch 71/100:
+  Train Loss: 0.0886
+  Val Loss: 0.0811
+  Val Reconstruction (MSE): 0.0811
+Epoch 72: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 892.01it/s, loss=0.0896]
+
+Epoch 72/100:
+  Train Loss: 0.0896
+  Val Loss: 0.0790
+  Val Reconstruction (MSE): 0.0790
+Epoch 73: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 895.34it/s, loss=0.0871]
+
+Epoch 73/100:
+  Train Loss: 0.0874
+  Val Loss: 0.0782
+  Val Reconstruction (MSE): 0.0782
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 74: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 894.49it/s, loss=0.0864]
+
+Epoch 74/100:
+  Train Loss: 0.0884
+  Val Loss: 0.0794
+  Val Reconstruction (MSE): 0.0794
+Epoch 75: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 891.75it/s, loss=0.0889]
+
+Epoch 75/100:
+  Train Loss: 0.0881
+  Val Loss: 0.0791
+  Val Reconstruction (MSE): 0.0791
+Epoch 76: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 900.83it/s, loss=0.0867]
+
+Epoch 76/100:
+  Train Loss: 0.0878
+  Val Loss: 0.0784
+  Val Reconstruction (MSE): 0.0784
+Epoch 77: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 949.57it/s, loss=0.0877]
+
+Epoch 77/100:
+  Train Loss: 0.0869
+  Val Loss: 0.0782
+  Val Reconstruction (MSE): 0.0782
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 78: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 892.68it/s, loss=0.0843]
+
+Epoch 78/100:
+  Train Loss: 0.0864
+  Val Loss: 0.0780
+  Val Reconstruction (MSE): 0.0780
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 79: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 891.36it/s, loss=0.0898]
+
+Epoch 79/100:
+  Train Loss: 0.0880
+  Val Loss: 0.0795
+  Val Reconstruction (MSE): 0.0795
+Epoch 80: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 892.74it/s, loss=0.0854]
+
+Epoch 80/100:
+  Train Loss: 0.0874
+  Val Loss: 0.0778
+  Val Reconstruction (MSE): 0.0778
+  Logging visualizations at epoch 80...
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 81: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 906.24it/s, loss=0.0841]
+
+Epoch 81/100:
+  Train Loss: 0.0867
+  Val Loss: 0.0773
+  Val Reconstruction (MSE): 0.0773
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 82: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 949.28it/s, loss=0.0853]
+
+Epoch 82/100:
+  Train Loss: 0.0877
+  Val Loss: 0.0777
+  Val Reconstruction (MSE): 0.0777
+Epoch 83: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 940.38it/s, loss=0.0878]
+
+Epoch 83/100:
+  Train Loss: 0.0865
+  Val Loss: 0.0782
+  Val Reconstruction (MSE): 0.0782
+Epoch 84: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 941.16it/s, loss=0.0863]
+
+Epoch 84/100:
+  Train Loss: 0.0864
+  Val Loss: 0.0771
+  Val Reconstruction (MSE): 0.0771
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 85: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 900.61it/s, loss=0.0845]
+
+Epoch 85/100:
+  Train Loss: 0.0857
+  Val Loss: 0.0784
+  Val Reconstruction (MSE): 0.0784
+Epoch 86: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 920.54it/s, loss=0.0881]
+
+Epoch 86/100:
+  Train Loss: 0.0858
+  Val Loss: 0.0770
+  Val Reconstruction (MSE): 0.0770
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 87: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 937.12it/s, loss=0.0859]
+
+Epoch 87/100:
+  Train Loss: 0.0858
+  Val Loss: 0.0771
+  Val Reconstruction (MSE): 0.0771
+Epoch 88: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 910.94it/s, loss=0.0845]
+
+Epoch 88/100:
+  Train Loss: 0.0866
+  Val Loss: 0.0775
+  Val Reconstruction (MSE): 0.0775
+Epoch 89: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 961.45it/s, loss=0.0862]
+
+Epoch 89/100:
+  Train Loss: 0.0859
+  Val Loss: 0.0761
+  Val Reconstruction (MSE): 0.0761
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 90: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 949.95it/s, loss=0.0849]
+
+Epoch 90/100:
+  Train Loss: 0.0867
+  Val Loss: 0.0772
+  Val Reconstruction (MSE): 0.0772
+  Logging visualizations at epoch 90...
+Epoch 91: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 922.03it/s, loss=0.0859]
+
+Epoch 91/100:
+  Train Loss: 0.0857
+  Val Loss: 0.0766
+  Val Reconstruction (MSE): 0.0766
+Epoch 92: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 870.73it/s, loss=0.0858]
+
+Epoch 92/100:
+  Train Loss: 0.0853
+  Val Loss: 0.0761
+  Val Reconstruction (MSE): 0.0761
+Epoch 93: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 899.63it/s, loss=0.0818]
+
+Epoch 93/100:
+  Train Loss: 0.0848
+  Val Loss: 0.0759
+  Val Reconstruction (MSE): 0.0759
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 94: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 899.30it/s, loss=0.0849]
+
+Epoch 94/100:
+  Train Loss: 0.0848
+  Val Loss: 0.0769
+  Val Reconstruction (MSE): 0.0769
+Epoch 95: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 842.43it/s, loss=0.0889]
+
+Epoch 95/100:
+  Train Loss: 0.0850
+  Val Loss: 0.0762
+  Val Reconstruction (MSE): 0.0762
+Epoch 96: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 934.23it/s, loss=0.0823]
+
+Epoch 96/100:
+  Train Loss: 0.0849
+  Val Loss: 0.0756
+  Val Reconstruction (MSE): 0.0756
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 97: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 897.13it/s, loss=0.0850]
+
+Epoch 97/100:
+  Train Loss: 0.0848
+  Val Loss: 0.0755
+  Val Reconstruction (MSE): 0.0755
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 98: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 941.58it/s, loss=0.0828]
+
+Epoch 98/100:
+  Train Loss: 0.0847
+  Val Loss: 0.0754
+  Val Reconstruction (MSE): 0.0754
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 99: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 945.29it/s, loss=0.0854]
+
+Epoch 99/100:
+  Train Loss: 0.0839
+  Val Loss: 0.0752
+  Val Reconstruction (MSE): 0.0752
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 100: 100%|█████████████████████████████████████████████| 125/125 [00:00<00:00, 937.88it/s, loss=0.0816]
+
+Epoch 100/100:
+  Train Loss: 0.0837
+  Val Loss: 0.0753
+  Val Reconstruction (MSE): 0.0753
+  Logging visualizations at epoch 100...
+
+Training complete! Final model saved to checkpoints/ae_gaussian/final_model.pt
+
+Final Evaluation:
+
+Train Set:
+  reconstruction_loss_mse: 0.0735
+  reconstruction_loss_l1: 0.2073
+  latent_variance: 0.4249
+  objective_loss: 0.0735
+
+Validation Set:
+  reconstruction_loss_mse: 0.0753
+  reconstruction_loss_l1: 0.2103
+  latent_variance: 0.4237
+  objective_loss: 0.0753
+
+Creating final visualizations...
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 69 that is less than the current step 897. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 70 that is less than the current step 910. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 71 that is less than the current step 923. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 72 that is less than the current step 936. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 73 that is less than the current step 949. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 74 that is less than the current step 962. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 75 that is less than the current step 975. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 76 that is less than the current step 988. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 77 that is less than the current step 1001. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 78 that is less than the current step 1014. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 79 that is less than the current step 1027. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 80 that is less than the current step 1040. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 81 that is less than the current step 1053. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 82 that is less than the current step 1066. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 83 that is less than the current step 1079. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 84 that is less than the current step 1092. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 85 that is less than the current step 1105. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 86 that is less than the current step 1118. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 87 that is less than the current step 1131. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 88 that is less than the current step 1144. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 89 that is less than the current step 1157. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 90 that is less than the current step 1170. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 91 that is less than the current step 1183. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 92 that is less than the current step 1196. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 93 that is less than the current step 1209. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 94 that is less than the current step 1222. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 95 that is less than the current step 1235. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 96 that is less than the current step 1248. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 97 that is less than the current step 1261. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 98 that is less than the current step 1274. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 99 that is less than the current step 1287. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.
+[34m[1mwandb[0m: [33mWARNING[0m Tried to log to step 100 that is less than the current step 1300. Steps must be monotonically increasing, so this data will be ignored. See https://wandb.me/define-metric to log data out of order.

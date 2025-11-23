@@ -1,0 +1,5 @@
+# Sweep configuration for loss type (categorical)
+# This sweeps over different loss functions
+
+parameter: "objective.params.loss_type"
+values: ["mse", "l1", "smooth_l1"]

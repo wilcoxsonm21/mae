@@ -1,0 +1,33 @@
+{"time":"2025-11-22T15:10:13.292310864-08:00","level":"INFO","msg":"stream: starting","core version":"0.23.0"}
+{"time":"2025-11-22T15:10:13.482037781-08:00","level":"INFO","msg":"stream: created new stream","id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:13.48208037-08:00","level":"INFO","msg":"handler: started","stream_id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:13.48211443-08:00","level":"INFO","msg":"stream: started","id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:13.48211575-08:00","level":"INFO","msg":"writer: started","stream_id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:13.48212657-08:00","level":"INFO","msg":"sender: started","stream_id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:15.513954677-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":1,"current":13}
+{"time":"2025-11-22T15:10:15.715665263-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":2,"current":26}
+{"time":"2025-11-22T15:10:15.911076219-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":3,"current":39}
+{"time":"2025-11-22T15:10:16.107533943-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":4,"current":52}
+{"time":"2025-11-22T15:10:16.304378716-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":5,"current":65}
+{"time":"2025-11-22T15:10:16.498879364-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":6,"current":78}
+{"time":"2025-11-22T15:10:16.693599191-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":7,"current":91}
+{"time":"2025-11-22T15:10:16.891895432-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":8,"current":104}
+{"time":"2025-11-22T15:10:17.091003102-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":9,"current":117}
+{"time":"2025-11-22T15:10:17.29086482-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":10,"current":130}
+{"time":"2025-11-22T15:10:18.083716965-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":10,"current":130}
+{"time":"2025-11-22T15:10:18.28573745-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":11,"current":143}
+{"time":"2025-11-22T15:10:18.48466438-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":12,"current":156}
+{"time":"2025-11-22T15:10:18.681384754-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":13,"current":169}
+{"time":"2025-11-22T15:10:18.886088284-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":14,"current":182}
+{"time":"2025-11-22T15:10:19.088509998-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":15,"current":195}
+{"time":"2025-11-22T15:10:19.296983472-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":16,"current":208}
+{"time":"2025-11-22T15:10:19.505955875-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":17,"current":221}
+{"time":"2025-11-22T15:10:19.713062961-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":18,"current":234}
+{"time":"2025-11-22T15:10:19.912196441-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":19,"current":247}
+{"time":"2025-11-22T15:10:20.111119201-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":20,"current":260}
+{"time":"2025-11-22T15:10:20.788342344-08:00","level":"WARN","msg":"handler: ignoring partial history record","step":20,"current":260}
+{"time":"2025-11-22T15:10:20.922333445-08:00","level":"INFO","msg":"stream: closing","id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:21.209129264-08:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-22T15:10:21.386589701-08:00","level":"INFO","msg":"handler: closed","stream_id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:21.386698621-08:00","level":"INFO","msg":"sender: closed","stream_id":"qrc2bcnd"}
+{"time":"2025-11-22T15:10:21.386708721-08:00","level":"INFO","msg":"stream: closed","id":"qrc2bcnd"}

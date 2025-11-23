@@ -1,0 +1,154 @@
+Loading dataset...
+Dataset loaded: input_dim=64
+Creating model...
+Model: mlp_ae
+Total parameters: 403,296
+Objective: reconstruction
+Creating initial visualizations...
+
+Starting training for 100 epochs...
+Epoch 1: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 658.61it/s, loss=0.1389]
+
+Epoch 1/100:
+  Train Loss: 0.2672
+  Val Loss: 0.1308
+  Val Reconstruction (MSE): 0.1308
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 2: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 950.37it/s, loss=0.1362]
+
+Epoch 2/100:
+  Train Loss: 0.1388
+  Val Loss: 0.1299
+  Val Reconstruction (MSE): 0.1299
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 3: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 988.08it/s, loss=0.1529]
+
+Epoch 3/100:
+  Train Loss: 0.1758
+  Val Loss: 0.1294
+  Val Reconstruction (MSE): 0.1294
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 4: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 979.70it/s, loss=0.1375]
+
+Epoch 4/100:
+  Train Loss: 0.1435
+  Val Loss: 0.1279
+  Val Reconstruction (MSE): 0.1279
+  Saved best model to checkpoints/ae_gaussian/best_model.pt
+Epoch 5: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 976.50it/s, loss=0.1565]
+
+Epoch 5/100:
+  Train Loss: 0.1615
+  Val Loss: 0.1312
+  Val Reconstruction (MSE): 0.1312
+Epoch 6: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 967.12it/s, loss=7.5078]
+
+Epoch 6/100:
+  Train Loss: 0.2426
+  Val Loss: 0.2962
+  Val Reconstruction (MSE): 0.2962
+Epoch 7: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 965.36it/s, loss=0.1865]
+
+Epoch 7/100:
+  Train Loss: 0.3101
+  Val Loss: 0.1343
+  Val Reconstruction (MSE): 0.1343
+Epoch 8: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 943.10it/s, loss=0.1749]
+
+Epoch 8/100:
+  Train Loss: 0.1805
+  Val Loss: 0.1329
+  Val Reconstruction (MSE): 0.1329
+Epoch 9: 100%|███████████████████████████████████████████████| 125/125 [00:00<00:00, 937.00it/s, loss=0.1723]
+
+Epoch 9/100:
+  Train Loss: 0.1672
+  Val Loss: 0.1311
+  Val Reconstruction (MSE): 0.1311
+Epoch 10: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 931.20it/s, loss=0.1770]
+
+Epoch 10/100:
+  Train Loss: 0.2189
+  Val Loss: 0.1330
+  Val Reconstruction (MSE): 0.1330
+  Logging visualizations at epoch 10...
+Epoch 11: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 915.83it/s, loss=0.2189]
+
+Epoch 11/100:
+  Train Loss: 0.1873
+  Val Loss: 0.1691
+  Val Reconstruction (MSE): 0.1691
+Epoch 12: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 936.78it/s, loss=0.2791]
+
+Epoch 12/100:
+  Train Loss: 0.2519
+  Val Loss: 0.1636
+  Val Reconstruction (MSE): 0.1636
+Epoch 13: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 951.39it/s, loss=0.2537]
+
+Epoch 13/100:
+  Train Loss: 0.2989
+  Val Loss: 0.2072
+  Val Reconstruction (MSE): 0.2072
+Epoch 14: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 897.50it/s, loss=0.4529]
+
+Epoch 14/100:
+  Train Loss: 0.4254
+  Val Loss: 0.3254
+  Val Reconstruction (MSE): 0.3254
+Epoch 15: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 912.51it/s, loss=0.3810]
+
+Epoch 15/100:
+  Train Loss: 0.4022
+  Val Loss: 0.3142
+  Val Reconstruction (MSE): 0.3142
+Epoch 16: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 874.94it/s, loss=0.3106]
+
+Epoch 16/100:
+  Train Loss: 0.3777
+  Val Loss: 0.2965
+  Val Reconstruction (MSE): 0.2965
+Epoch 17: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 873.79it/s, loss=0.3570]
+
+Epoch 17/100:
+  Train Loss: 0.3828
+  Val Loss: 0.3025
+  Val Reconstruction (MSE): 0.3025
+Epoch 18: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 884.85it/s, loss=0.3818]
+
+Epoch 18/100:
+  Train Loss: 0.4480
+  Val Loss: 0.2994
+  Val Reconstruction (MSE): 0.2994
+Epoch 19: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 936.37it/s, loss=0.3585]
+
+Epoch 19/100:
+  Train Loss: 0.3697
+  Val Loss: 0.3000
+  Val Reconstruction (MSE): 0.3000
+Epoch 20: 100%|██████████████████████████████████████████████| 125/125 [00:00<00:00, 937.59it/s, loss=0.3766]
+
+Epoch 20/100:
+  Train Loss: 0.3579
+  Val Loss: 0.2922
+  Val Reconstruction (MSE): 0.2922
+  Logging visualizations at epoch 20...
+Epoch 21:  91%|█████████████████████████████████████████▉    | 114/125 [00:00<00:00, 861.88it/s, loss=0.3524]
+Traceback (most recent call last):
+  File "/home/mwil/mae_ae_test/main.py", line 312, in <module>
+    main()
+  File "/home/mwil/mae_ae_test/main.py", line 308, in main
+    train(config, wandb_log=not args.no_wandb)
+  File "/home/mwil/mae_ae_test/main.py", line 222, in train
+    train_loss = train_epoch(
+                 ^^^^^^^^^^^^
+  File "/home/mwil/mae_ae_test/main.py", line 115, in train_epoch
+    loss.backward()
+  File "/home/mwil/miniconda3/envs/mae/lib/python3.12/site-packages/torch/_tensor.py", line 625, in backward
+    torch.autograd.backward(
+  File "/home/mwil/miniconda3/envs/mae/lib/python3.12/site-packages/torch/autograd/__init__.py", line 354, in backward
+    _engine_run_backward(
+  File "/home/mwil/miniconda3/envs/mae/lib/python3.12/site-packages/torch/autograd/graph.py", line 841, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
