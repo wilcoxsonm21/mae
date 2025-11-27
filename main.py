@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 # Import models
-from models import UNetAE, UNetMAE
+from models import UNetAE, UNetMAE, CNNAutoencoder, CNNMAE
 
 # Import objectives
 from objectives import ReconstructionLoss, MaskedReconstructionLoss
@@ -59,8 +59,13 @@ def get_model(config, image_size=None):
         model = UNetAE(**model_params)
     elif model_type == 'unet_mae':
         model = UNetMAE(**model_params)
+    elif model_type == 'cnn_ae':
+        model = CNNAutoencoder(**model_params)
+    elif model_type == 'cnn_mae':
+        model = CNNMAE(**model_params)
     else:
-        raise ValueError(f"Unknown model type: {model_type}")
+        raise ValueError(f"Unknown model type: {model_type}. "
+                        f"Choose from: unet_ae, unet_mae, cnn_ae, cnn_mae")
 
     return model
 
@@ -253,7 +258,27 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
         )
         # Update config with sweep parameters (if running a sweep)
         # This ensures the config hash includes sweep modifications
-        config.update(dict(wandb.config))
+        if hasattr(wandb.config, 'as_dict'):
+            sweep_config = wandb.config.as_dict()
+        else:
+            sweep_config = dict(wandb.config)
+
+        # Deep update to handle nested parameters
+        def deep_update(base_dict, update_dict):
+            for key, value in update_dict.items():
+                if isinstance(value, dict) and key in base_dict and isinstance(base_dict[key], dict):
+                    deep_update(base_dict[key], value)
+                else:
+                    base_dict[key] = value
+
+        # Show what's in sweep_config for debugging
+        print(f"\nSweep config received from wandb:")
+        for key in ['model', 'optimizer', 'dataset']:
+            if key in sweep_config:
+                print(f"  {key}: {sweep_config[key]}")
+
+        deep_update(config, sweep_config)
+        print(f"Config updated with sweep parameters")
 
     # Get dataset
     print("Loading dataset...")
@@ -320,8 +345,18 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
 
     # Determine checkpoint directory
     if use_hash_dir:
-        from utils import get_experiment_dir
+        from utils import get_experiment_dir, compute_config_hash
+        config_hash = compute_config_hash(config)
         checkpoint_dir = get_experiment_dir(config, base_results_dir)
+        print(f"\nUsing hash-based checkpoint dir: {checkpoint_dir}")
+        print(f"Config hash: {config_hash}")
+
+        # Print key sweep parameters for verification
+        if wandb_log:
+            print(f"Key parameters in config:")
+            print(f"  model.type: {config.get('model', {}).get('type')}")
+            print(f"  model.params.latent_dim: {config.get('model', {}).get('params', {}).get('latent_dim')}")
+            print(f"  optimizer.lr: {config.get('optimizer', {}).get('lr')}")
     else:
         checkpoint_dir = Path(config.get('checkpoint_dir', './checkpoints'))
     checkpoint_dir.mkdir(parents=True, exist_ok=True)

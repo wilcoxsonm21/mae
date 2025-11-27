@@ -93,6 +93,7 @@ def generate_checkerboard(n_samples, image_size=32, grid_sizes=None,
                 - 'scale': (n_samples,) array of scale factors
                 - 'perspective_x': (n_samples,) array of x-axis perspective
                 - 'perspective_y': (n_samples,) array of y-axis perspective
+                - 'mean_intensity': (n_samples,) array of mean pixel intensities (trivial sanity check)
     """
     np.random.seed(random_state)
     images = []
@@ -104,7 +105,8 @@ def generate_checkerboard(n_samples, image_size=32, grid_sizes=None,
             'rotation': [],
             'scale': [],
             'perspective_x': [],
-            'perspective_y': []
+            'perspective_y': [],
+            'mean_intensity': []  # Trivial metric for sanity checking
         }
 
     if grid_sizes is None:
@@ -213,6 +215,9 @@ def generate_checkerboard(n_samples, image_size=32, grid_sizes=None,
         if noise_level > 0:
             image += np.random.randn(image_size, image_size) * noise_level
 
+        # Compute mean intensity before flattening (trivial metric for sanity check)
+        mean_intensity = np.mean(image)
+
         images.append(image.flatten())
 
         # Store generation parameters
@@ -222,6 +227,7 @@ def generate_checkerboard(n_samples, image_size=32, grid_sizes=None,
             params['scale'].append(scale_factor)
             params['perspective_x'].append(persp_x)
             params['perspective_y'].append(persp_y)
+            params['mean_intensity'].append(mean_intensity)
 
     images = np.array(images, dtype=np.float32)
 
@@ -386,6 +392,145 @@ def generate_random_fourier(n_samples, image_size=32, n_frequencies=10,
     return images
 
 
+def generate_shapes_dataset(n_samples, image_size=32, noise_level=0.0, random_state=42,
+                            return_params=False):
+    """Generate dataset of geometric shapes with different colors.
+
+    Args:
+        n_samples: Number of images to generate
+        image_size: Size of square images (default: 32)
+        noise_level: Amount of Gaussian noise to add (0-1)
+        random_state: Random seed
+        return_params: If True, return shape and color labels
+
+    Returns:
+        If return_params=False:
+            numpy array of shape (n_samples, image_size * image_size)
+        If return_params=True:
+            tuple of (images, params_dict) where params_dict contains:
+                - 'shape': (n_samples,) array of shape indices
+                - 'color': (n_samples,) array of color indices
+    """
+    import math
+    from PIL import Image, ImageDraw
+
+    np.random.seed(random_state)
+
+    # Define shapes and colors
+    shapes = [
+        "circle", "triangle", "square", "rectangle",
+        "pentagon", "hexagon", "star"
+    ]
+
+    colors_rgb = {
+        'red': (255, 0, 0),
+        'green': (0, 255, 0),
+        'blue': (0, 0, 255),
+        'yellow': (255, 255, 0),
+        'cyan': (0, 255, 255),
+        'magenta': (255, 0, 255),
+    }
+    color_names = list(colors_rgb.keys())
+
+    images = []
+    shape_labels = []
+    color_labels = []
+
+    for i in range(n_samples):
+        # Random shape and color
+        shape_idx = np.random.randint(0, len(shapes))
+        color_idx = np.random.randint(0, len(color_names))
+
+        shape = shapes[shape_idx]
+        color_name = color_names[color_idx]
+        color = colors_rgb[color_name]
+
+        # Create white background
+        img = Image.new('RGB', (image_size, image_size), (255, 255, 255))
+        draw = ImageDraw.Draw(img)
+
+        # Shape size (relative to image size)
+        size = int(image_size * np.random.uniform(0.4, 0.7))
+
+        # Position: add slight random offset from center (for diversity)
+        max_offset = int(image_size * 0.15)  # 15% of image size
+        cx = image_size // 2 + np.random.randint(-max_offset, max_offset + 1)
+        cy = image_size // 2 + np.random.randint(-max_offset, max_offset + 1)
+
+        # Draw shape
+        if shape == "circle":
+            radius = size // 2
+            bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
+            draw.ellipse(bbox, fill=color)
+
+        elif shape == "triangle":
+            points = [
+                (cx, cy - size // 2),
+                (cx - size // 2, cy + size // 2),
+                (cx + size // 2, cy + size // 2),
+            ]
+            draw.polygon(points, fill=color)
+
+        elif shape == "square":
+            half_size = size // 2
+            bbox = [cx - half_size, cy - half_size, cx + half_size, cy + half_size]
+            draw.rectangle(bbox, fill=color)
+
+        elif shape == "rectangle":
+            half_width = size // 2
+            half_height = int(size * 0.6)
+            bbox = [cx - half_width, cy - half_height, cx + half_width, cy + half_height]
+            draw.rectangle(bbox, fill=color)
+
+        elif shape in ["pentagon", "hexagon"]:
+            sides = 5 if shape == "pentagon" else 6
+            radius = size // 2
+            points = [
+                (
+                    cx + radius * math.cos(2 * math.pi * j / sides - math.pi/2),
+                    cy + radius * math.sin(2 * math.pi * j / sides - math.pi/2),
+                )
+                for j in range(sides)
+            ]
+            draw.polygon(points, fill=color)
+
+        elif shape == "star":
+            outer_radius = size // 2
+            inner_radius = size // 4
+            points = []
+            for j in range(10):
+                radius = outer_radius if j % 2 == 1 else inner_radius
+                angle = 2 * math.pi * j / 10 - math.pi/2
+                x = cx + radius * math.cos(angle)
+                y = cy + radius * math.sin(angle)
+                points.append((x, y))
+            draw.polygon(points, fill=color)
+
+        # Keep RGB (3 channels) to preserve color information
+        img_array = np.array(img, dtype=np.float32) / 255.0  # Shape: (32, 32, 3)
+
+        # Add noise if requested
+        if noise_level > 0:
+            img_array += np.random.randn(image_size, image_size, 3) * noise_level
+            img_array = np.clip(img_array, 0, 1)
+
+        # Flatten to (32*32*3,) = 3072 dimensional vector
+        images.append(img_array.flatten())
+        shape_labels.append(shape_idx)
+        color_labels.append(color_idx)
+
+    images = np.array(images, dtype=np.float32)
+
+    if return_params:
+        params = {
+            'shape': np.array(shape_labels, dtype=np.int64),
+            'color': np.array(color_labels, dtype=np.int64),
+        }
+        return images, params
+    else:
+        return images
+
+
 def generate_noise_images(n_samples, image_size=32, noise_type='gaussian', random_state=42):
     """Generate random noise images.
 
@@ -426,7 +571,7 @@ def normalize_data(data):
 
 
 def get_dataset(dataset_name, n_samples=10000, image_size=32, train_split=0.8,
-                batch_size=128, normalize=True, random_state=42, **kwargs):
+                batch_size=128, normalize=True, random_state=42, supervised_task=None, **kwargs):
     """Get a 2D image dataset with train/val split.
 
     Args:
@@ -509,15 +654,34 @@ def get_dataset(dataset_name, n_samples=10000, image_size=32, train_split=0.8,
         noise_type = kwargs.get('noise_type', 'gaussian')
         data = generate_noise_images(n_samples, image_size, noise_type, random_state)
 
+    elif dataset_name == 'shapes':
+        noise_level = kwargs.get('noise_level', 0.0)
+        return_params = kwargs.get('return_params', False)
+
+        result = generate_shapes_dataset(
+            n_samples, image_size, noise_level, random_state, return_params
+        )
+
+        if return_params:
+            data, generation_params = result
+        else:
+            data = result
+            generation_params = None
+
     else:
         raise ValueError(f"Unknown dataset: {dataset_name}. Choose from: "
                         "'fourier_grid', 'checkerboard', 'radial', 'gabor', "
-                        "'random_fourier', 'noise'")
+                        "'random_fourier', 'noise', 'shapes'")
 
     # Normalize if requested
     mean, std = None, None
     if normalize:
         data, mean, std = normalize_data(data)
+
+    # Update mean_intensity with normalized values (if it exists)
+    if generation_params is not None and 'mean_intensity' in generation_params:
+        # Recompute mean intensity from normalized data
+        generation_params['mean_intensity'] = np.mean(data, axis=1).astype(np.float32)
 
     # Split into train and validation
     n_train = int(n_samples * train_split)
@@ -535,9 +699,41 @@ def get_dataset(dataset_name, n_samples=10000, image_size=32, train_split=0.8,
     train_tensor = torch.from_numpy(train_data)
     val_tensor = torch.from_numpy(val_data)
 
-    # Create TensorDatasets (targets are the same as inputs for autoencoders)
-    train_dataset = TensorDataset(train_tensor, train_tensor)
-    val_dataset = TensorDataset(val_tensor, val_tensor)
+    # Create TensorDatasets
+    if supervised_task is not None and generation_params is not None:
+        # Supervised learning: include task labels in the dataset
+        if supervised_task not in generation_params:
+            raise ValueError(f"Task '{supervised_task}' not found in generation parameters. "
+                           f"Available tasks: {list(generation_params.keys())}")
+
+        # Get labels for the supervised task
+        train_labels_np = train_params[supervised_task]
+        val_labels_np = val_params[supervised_task]
+
+        # Convert labels to tensors
+        # For classification tasks, labels are integers
+        if supervised_task in ['shape', 'color']:
+            train_labels = torch.from_numpy(train_labels_np).long()
+            val_labels = torch.from_numpy(val_labels_np).long()
+        elif supervised_task == 'grid_size':
+            # grid_size needs special conversion from actual sizes (2,4,8,16) to class indices (0,1,2,3)
+            from evaluation.downstream.metrics import grid_size_to_class
+            train_class_indices = grid_size_to_class(train_labels_np)
+            val_class_indices = grid_size_to_class(val_labels_np)
+            train_labels = torch.from_numpy(train_class_indices).long()
+            val_labels = torch.from_numpy(val_class_indices).long()
+        else:
+            # For regression tasks
+            train_labels = torch.from_numpy(train_labels_np).float()
+            val_labels = torch.from_numpy(val_labels_np).float()
+
+        # Create datasets with labels
+        train_dataset = TensorDataset(train_tensor, train_labels)
+        val_dataset = TensorDataset(val_tensor, val_labels)
+    else:
+        # Autoencoder mode: targets are the same as inputs
+        train_dataset = TensorDataset(train_tensor, train_tensor)
+        val_dataset = TensorDataset(val_tensor, val_tensor)
 
     # Create DataLoaders
     train_loader = DataLoader(

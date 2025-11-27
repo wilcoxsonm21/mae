@@ -1,0 +1,70 @@
+# Configuration for CNN Masked Autoencoder on 2D checkerboard patterns
+# Simple encoder-decoder architecture WITHOUT skip connections
+
+experiment_name: "cnn_mae_checkerboard"
+seed: 42
+device: "cuda"
+
+# CNN Masked Autoencoder (no skip connections)
+model:
+  type: "cnn_mae"
+  params:
+    latent_dim: 128
+    base_channels: 64  # Base number of channels
+    dropout: 0.0
+    mask_ratio: 0.5  # Mask 50% of input pixels
+    in_channels: 1  # Grayscale images
+
+# Masked reconstruction loss
+objective:
+  type: "masked_reconstruction"
+  params:
+    loss_type: "mse"
+    reduction: "mean"
+    predict_all: false  # Only compute loss on masked positions
+
+# Checkerboard dataset with homographic transformations
+dataset:
+  dataset_name: "checkerboard"
+  n_samples: 15000
+  image_size: 32  # 32x32 images (input_dim = 1024)
+  train_split: 0.8
+  batch_size: 256
+  normalize: true
+  random_state: 42
+  # Checkerboard parameters
+  grid_sizes: [2, 4, 8, 16]
+  noise_level: 0.01
+  # Homographic transformation parameters
+  apply_transforms: true
+  rotation_range: 15.0  # ±15 degrees
+  scale_range: [0.8, 1.2]  # 80% to 120% scaling
+  perspective_range: 0.2  # Amount of perspective distortion
+  # Save generation parameters for downstream evaluation
+  return_params: true
+
+# Adam optimizer with higher learning rate for MAE
+optimizer:
+  type: "adam"
+  lr: 0.003
+  weight_decay: 0.0
+
+# Training settings
+num_epochs: 20
+checkpoint_dir: "./checkpoints/cnn_mae_checkerboard"
+visualization_frequency: 15  # Log visualizations every N epochs
+
+# Wandb
+wandb_project: "autoencoder-training"
+
+# Downstream evaluation settings
+downstream:
+  enabled: true
+  train_probes: true
+  probe_config:
+    hidden_dim: 64
+    lr: 0.001
+    weight_decay: 0.0001
+    epochs: 100
+    batch_size: 256
+    patience: 15

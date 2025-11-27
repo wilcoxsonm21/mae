@@ -30,8 +30,8 @@ class ProbeTrainer:
         self.probes = {}
 
         # Task configuration
-        self.regression_tasks = ['rotation', 'scale', 'perspective_x', 'perspective_y']
-        self.classification_tasks = ['grid_size']
+        self.regression_tasks = ['rotation', 'scale', 'perspective_x', 'perspective_y', 'mean_intensity']
+        self.classification_tasks = ['grid_size', 'shape', 'color']
 
     @torch.no_grad()
     def extract_latents(self, dataloader):
@@ -46,7 +46,18 @@ class ProbeTrainer:
         self.encoder.eval()
         latents = []
 
-        for batch, _ in dataloader:
+        # IMPORTANT: Create a non-shuffled dataloader to preserve order
+        # The original dataloader may have shuffle=True for training,
+        # but we need consistent ordering to match with params_dict
+        dataset = dataloader.dataset
+        non_shuffled_loader = DataLoader(
+            dataset,
+            batch_size=dataloader.batch_size,
+            shuffle=False,  # CRITICAL: No shuffling to match params order
+            num_workers=0
+        )
+
+        for batch, _ in non_shuffled_loader:
             batch = batch.to(self.device)
 
             # Get latent codes
@@ -83,10 +94,17 @@ class ProbeTrainer:
             if task in params_dict:
                 targets[task] = torch.from_numpy(params_dict[task]).float().unsqueeze(1)
 
-        # Classification target (grid_size)
+        # Classification targets
         if 'grid_size' in params_dict:
             class_indices = grid_size_to_class(params_dict['grid_size'])
             targets['grid_size'] = torch.from_numpy(class_indices).long()
+
+        # Shape and color are already integer indices
+        if 'shape' in params_dict:
+            targets['shape'] = torch.from_numpy(params_dict['shape']).long()
+
+        if 'color' in params_dict:
+            targets['color'] = torch.from_numpy(params_dict['color']).long()
 
         return targets
 
@@ -118,7 +136,14 @@ class ProbeTrainer:
 
         # Create probe
         if is_classification:
-            output_dim = 4  # Grid sizes: 2, 4, 8, 16
+            if task == 'grid_size':
+                output_dim = 4  # Grid sizes: 2, 4, 8, 16
+            elif task == 'shape':
+                output_dim = 7  # 7 shapes: circle, triangle, square, rectangle, pentagon, hexagon, star
+            elif task == 'color':
+                output_dim = 6  # 6 colors: red, green, blue, yellow, cyan, magenta
+            else:
+                output_dim = 4  # Default
         else:
             output_dim = 1
 

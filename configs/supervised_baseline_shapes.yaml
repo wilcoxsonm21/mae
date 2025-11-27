@@ -1,0 +1,52 @@
+# Configuration for supervised baseline training on shapes dataset
+# Trains encoder + probe end-to-end on shape/color classification
+
+# Experiment settings
+experiment_name: "supervised_baseline_shapes"
+seed: 42
+device: "cuda"  # or "cpu"
+
+# Task to train on (one of: shape, color)
+task: "shape"
+
+# Encoder configuration (same architecture as UNetAE/UNetMAE encoder)
+encoder:
+  latent_dim: 64
+  base_channels: 64
+  dropout: 0.0
+  in_channels: 3  # RGB images
+
+# Probe configuration
+probe:
+  hidden_dim: 64
+  dropout: 0.1
+
+# Dataset configuration
+dataset:
+  dataset_name: "shapes"
+  n_samples: 10000
+  image_size: 32
+  train_split: 0.8
+  batch_size: 128
+  normalize: true
+  random_state: 42
+
+  # Shapes dataset parameters
+  noise_level: 0.0
+
+  # Return generation parameters for downstream evaluation
+  return_params: true
+
+# Optimizer configuration
+optimizer:
+  type: "adam"
+  lr: 0.001
+  weight_decay: 0.0001
+
+# Training configuration
+num_epochs: 100
+patience: 15  # Early stopping patience
+checkpoint_dir: "./checkpoints/supervised_baseline_shapes"
+
+# Weights & Biases configuration
+wandb_project: "supervised-baseline-shapes"

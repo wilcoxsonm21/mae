@@ -1,0 +1,58 @@
+# Configuration for supervised baseline training
+# Trains encoder + probe end-to-end on downstream tasks
+
+# Experiment settings
+experiment_name: "supervised_baseline"
+seed: 42
+device: "cuda"  # or "cpu"
+
+# Task to train on (one of: rotation, scale, perspective_x, perspective_y, grid_size)
+task: "rotation"
+
+# Encoder configuration (same architecture as UNetAE/UNetMAE encoder)
+encoder:
+  latent_dim: 64
+  base_channels: 64
+  dropout: 0.0
+
+# Probe configuration
+probe:
+  hidden_dim: 64
+  dropout: 0.1
+
+# Dataset configuration
+dataset:
+  dataset_name: "checkerboard"
+  n_samples: 10000
+  image_size: 32
+  train_split: 0.8
+  batch_size: 128
+  normalize: true
+  random_state: 42
+
+  # Checkerboard parameters
+  grid_sizes: [2, 4, 8, 16]
+  noise_level: 0.01
+
+  # Augmentation parameters (for downstream tasks)
+  apply_transforms: true
+  rotation_range: 15.0  # degrees
+  scale_range: [0.8, 1.2]  # min, max scale
+  perspective_range: 0.2  # perspective distortion strength
+
+  # Return generation parameters for downstream evaluation
+  return_params: true
+
+# Optimizer configuration
+optimizer:
+  type: "adam"
+  lr: 0.003
+  weight_decay: 0.0001
+
+# Training configuration
+num_epochs: 100
+patience: 15  # Early stopping patience
+checkpoint_dir: "./checkpoints/supervised_baseline"
+
+# Weights & Biases configuration
+wandb_project: "supervised-baseline"
