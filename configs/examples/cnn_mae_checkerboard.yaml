@@ -37,9 +37,9 @@ dataset:
   noise_level: 0.01
   # Homographic transformation parameters
   apply_transforms: true
-  rotation_range: 15.0  # ±15 degrees
-  scale_range: [0.8, 1.2]  # 80% to 120% scaling
-  perspective_range: 0.2  # Amount of perspective distortion
+  rotation_range: 45.0  # ±15 degrees
+  scale_range: [0.2, 5.0]  # 80% to 120% scaling
+  perspective_range: 0.4  # Amount of perspective distortion
   # Save generation parameters for downstream evaluation
   return_params: true
 
@@ -62,6 +62,7 @@ downstream:
   enabled: true
   train_probes: true
   probe_config:
+    probe_type: "mlp"  # Use MLP probe (default)
     hidden_dim: 64
     lr: 0.001
     weight_decay: 0.0001

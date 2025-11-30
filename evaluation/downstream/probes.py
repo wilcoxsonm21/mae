@@ -5,37 +5,47 @@ import torch.nn as nn
 
 
 class LatentProbe(nn.Module):
-    """Small MLP that predicts a property from latent codes.
+    """Probe that predicts a property from latent codes.
 
-    This probe is intentionally kept small to test if the latent representation
-    contains linearly separable information about the generation parameters.
+    Supports two architectures:
+    - 'linear': Single linear layer (tests linear separability)
+    - 'mlp': 3-layer MLP with hidden layers (tests non-linear separability)
     """
 
-    def __init__(self, latent_dim, hidden_dim=64, output_dim=1, task_type='regression', dropout=0.1):
+    def __init__(self, latent_dim, hidden_dim=64, output_dim=1, task_type='regression',
+                 dropout=0.1, probe_type='mlp'):
         """Initialize latent probe.
 
         Args:
             latent_dim: Dimension of encoder latent space
-            hidden_dim: Hidden layer size (keep small)
+            hidden_dim: Hidden layer size (only used for MLP)
             output_dim: Output dimension (1 for regression, num_classes for classification)
             task_type: 'regression' or 'classification'
-            dropout: Dropout probability for regularization
+            dropout: Dropout probability for regularization (only used for MLP)
+            probe_type: 'linear' or 'mlp'
         """
         super().__init__()
 
         self.latent_dim = latent_dim
         self.task_type = task_type
+        self.probe_type = probe_type
 
-        # 3-layer MLP with 2 ReLUs
-        self.net = nn.Sequential(
-            nn.Linear(latent_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim, output_dim)
-        )
+        if probe_type == 'linear':
+            # Single linear layer (no hidden layers)
+            self.net = nn.Linear(latent_dim, output_dim)
+        elif probe_type == 'mlp':
+            # 3-layer MLP with 2 ReLUs
+            self.net = nn.Sequential(
+                nn.Linear(latent_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim, hidden_dim),
+                nn.ReLU(),
+                nn.Dropout(dropout),
+                nn.Linear(hidden_dim, output_dim)
+            )
+        else:
+            raise ValueError(f"Unknown probe_type: {probe_type}. Choose 'linear' or 'mlp'.")
 
     def forward(self, z):
         """Forward pass.

@@ -55,7 +55,7 @@ def load_model_from_checkpoint(checkpoint_path, device='cuda'):
 
 
 def evaluate_model(model, train_loader, val_loader, train_params, val_params,
-                   device='cuda', verbose=False):
+                   device='cuda', verbose=False, probe_type='mlp'):
     """Run downstream evaluation on a model.
 
     Args:
@@ -66,6 +66,7 @@ def evaluate_model(model, train_loader, val_loader, train_params, val_params,
         val_params: Validation generation parameters
         device: Device to run on
         verbose: Whether to print progress
+        probe_type: 'linear' or 'mlp'
 
     Returns:
         Dictionary of evaluation results
@@ -74,7 +75,7 @@ def evaluate_model(model, train_loader, val_loader, train_params, val_params,
 
     # Train probes
     if verbose:
-        print("Training downstream probes...")
+        print(f"Training downstream probes (probe_type={probe_type})...")
     probe_trainer.train_probes(
         train_loader=train_loader,
         val_loader=val_loader,
@@ -86,7 +87,8 @@ def evaluate_model(model, train_loader, val_loader, train_params, val_params,
         epochs=100,
         batch_size=256,
         patience=15,
-        verbose=verbose
+        verbose=verbose,
+        probe_type=probe_type
     )
 
     # Evaluate probes
@@ -97,7 +99,7 @@ def evaluate_model(model, train_loader, val_loader, train_params, val_params,
     return results
 
 
-def compare_models(model_paths, dataset_config, device='cuda', verbose=True):
+def compare_models(model_paths, dataset_config, device='cuda', verbose=True, probe_type='mlp'):
     """Compare downstream performance across multiple models.
 
     Args:
@@ -105,6 +107,7 @@ def compare_models(model_paths, dataset_config, device='cuda', verbose=True):
         dataset_config: Dataset configuration dictionary
         device: Device to run on
         verbose: Whether to print progress
+        probe_type: 'linear' or 'mlp'
 
     Returns:
         DataFrame with comparison results
@@ -132,7 +135,7 @@ def compare_models(model_paths, dataset_config, device='cuda', verbose=True):
         # Evaluate
         results = evaluate_model(
             model, train_loader, val_loader, train_params, val_params,
-            device=device, verbose=verbose
+            device=device, verbose=verbose, probe_type=probe_type
         )
 
         all_results[model_name] = results
@@ -177,11 +180,14 @@ def main():
                        help='Device to use (cuda/cpu)')
     parser.add_argument('--checkpoints-dir', type=str, default='./checkpoints',
                        help='Base directory containing checkpoints')
+    parser.add_argument('--probe-type', type=str, default='mlp', choices=['linear', 'mlp'],
+                       help='Type of probe to use (linear or mlp)')
 
     args = parser.parse_args()
 
     device = torch.device(args.device if torch.cuda.is_available() else 'cpu')
     checkpoints_dir = Path(args.checkpoints_dir)
+    probe_type = args.probe_type
 
     # Define models to compare
     model_paths = {
@@ -224,7 +230,8 @@ def main():
     }
 
     # Run comparison
-    df, all_results = compare_models(existing_models, dataset_config, device=device)
+    print(f"\nProbe type: {probe_type}")
+    df, all_results = compare_models(existing_models, dataset_config, device=device, probe_type=probe_type)
 
     # Save results
     output_path = Path('model_comparison_results.csv')

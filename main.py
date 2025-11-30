@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 # Import models
-from models import UNetAE, UNetMAE, CNNAutoencoder, CNNMAE
+from models import UNetAE, UNetMAE, CNNAutoencoder, CNNMAE, TransformerAE, TransformerMAE
 
 # Import objectives
 from objectives import ReconstructionLoss, MaskedReconstructionLoss
@@ -63,9 +63,13 @@ def get_model(config, image_size=None):
         model = CNNAutoencoder(**model_params)
     elif model_type == 'cnn_mae':
         model = CNNMAE(**model_params)
+    elif model_type == 'transformer_ae':
+        model = TransformerAE(**model_params)
+    elif model_type == 'transformer_mae':
+        model = TransformerMAE(**model_params)
     else:
         raise ValueError(f"Unknown model type: {model_type}. "
-                        f"Choose from: unet_ae, unet_mae, cnn_ae, cnn_mae")
+                        f"Choose from: unet_ae, unet_mae, cnn_ae, cnn_mae, transformer_ae, transformer_mae")
 
     return model
 
@@ -148,7 +152,7 @@ def train_epoch(model, train_loader, objective, optimizer, device, epoch, wandb_
 
 
 def run_downstream_evaluation(model, train_loader, val_loader, train_params, val_params,
-                              device, wandb_log=False, step=None, save_dir=None):
+                              device, wandb_log=False, step=None, save_dir=None, probe_config=None):
     """Run downstream evaluation of latent representations.
 
     Args:
@@ -161,6 +165,7 @@ def run_downstream_evaluation(model, train_loader, val_loader, train_params, val
         wandb_log: Whether to log to wandb
         step: Current training step for logging
         save_dir: Directory to save visualizations (optional)
+        probe_config: Dictionary with probe configuration (optional)
 
     Returns:
         Dictionary of evaluation results
@@ -168,6 +173,21 @@ def run_downstream_evaluation(model, train_loader, val_loader, train_params, val
     print("\n" + "="*60)
     print("Running Downstream Evaluation")
     print("="*60)
+
+    # Default probe config
+    if probe_config is None:
+        probe_config = {}
+
+    # Get probe settings
+    probe_type = probe_config.get('probe_type', 'mlp')
+    hidden_dim = probe_config.get('hidden_dim', 64)
+    lr = probe_config.get('lr', 1e-3)
+    weight_decay = probe_config.get('weight_decay', 1e-4)
+    epochs = probe_config.get('epochs', 100)
+    batch_size = probe_config.get('batch_size', 256)
+    patience = probe_config.get('patience', 15)
+
+    print(f"Probe type: {probe_type}")
 
     # Create probe trainer
     probe_trainer = ProbeTrainer(model, device=device)
@@ -179,13 +199,14 @@ def run_downstream_evaluation(model, train_loader, val_loader, train_params, val
         val_loader=val_loader,
         train_params=train_params,
         val_params=val_params,
-        hidden_dim=64,
-        lr=1e-3,
-        weight_decay=1e-4,
-        epochs=100,
-        batch_size=256,
-        patience=15,
-        verbose=True
+        hidden_dim=hidden_dim,
+        lr=lr,
+        weight_decay=weight_decay,
+        epochs=epochs,
+        batch_size=batch_size,
+        patience=patience,
+        verbose=True,
+        probe_type=probe_type
     )
 
     # Evaluate probes
@@ -343,6 +364,12 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
     num_epochs = config.get('num_epochs', 100)
     best_val_loss = float('inf')
 
+    # Early stopping on overfit config (optional, disabled by default)
+    early_stop_config = config.get('early_stop_overfit', {})
+    early_stop_enabled = early_stop_config.get('enabled', False)
+    early_stop_patience = early_stop_config.get('patience', 10)
+    overfit_counter = 0
+
     # Determine checkpoint directory
     if use_hash_dir:
         from utils import get_experiment_dir, compute_config_hash
@@ -415,10 +442,23 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
+                'train_loss': train_loss,
+                'train_loss_eval_mode': train_loss_eval_mode,
                 'val_loss': val_loss,
                 'config': config
             }, checkpoint_path)
             print(f"  Saved best model to {checkpoint_path}")
+
+        # Early stopping on overfit: stop if val_loss > train_loss for patience epochs
+        if early_stop_enabled:
+            if val_loss > train_loss_eval_mode:
+                overfit_counter += 1
+                print(f"  Overfit detected ({overfit_counter}/{early_stop_patience})")
+                if overfit_counter >= early_stop_patience:
+                    print(f"\nEarly stopping: val_loss > train_loss for {early_stop_patience} consecutive epochs")
+                    break
+            else:
+                overfit_counter = 0  # Reset counter
 
     # Save final model
     final_checkpoint_path = checkpoint_dir / 'final_model.pt'
@@ -460,6 +500,9 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
         downstream_eval_dir = checkpoint_dir / 'downstream_eval'
         downstream_eval_dir.mkdir(exist_ok=True)
 
+        # Get probe config from config file (if provided)
+        probe_config = config.get('downstream', {}).get('probe_config', None)
+
         downstream_results = run_downstream_evaluation(
             model=model,
             train_loader=train_loader,
@@ -469,8 +512,16 @@ def train(config, wandb_log=True, use_hash_dir=False, base_results_dir='trained_
             device=device,
             wandb_log=wandb_log,
             step=final_global_step,
-            save_dir=str(downstream_eval_dir)
+            save_dir=str(downstream_eval_dir),
+            probe_config=probe_config
         )
+
+        # Save downstream results to JSON
+        results_json_path = downstream_eval_dir / 'results.json'
+        import json
+        with open(results_json_path, 'w') as f:
+            json.dump(downstream_results, f, indent=2)
+        print(f"Downstream results saved to {results_json_path}")
 
     if wandb_log:
         wandb.finish()

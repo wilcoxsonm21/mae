@@ -80,19 +80,24 @@ def classification_metrics(predictions, targets, num_classes=4):
     }
 
 
-def grid_size_to_class(grid_sizes, grid_size_options=[2, 4, 8, 16]):
+def grid_size_to_class(grid_sizes, grid_size_options=None):
     """Convert grid sizes to class indices.
 
     Args:
-        grid_sizes: Array of grid sizes (2, 4, 8, or 16)
-        grid_size_options: List of possible grid sizes
+        grid_sizes: Array of grid sizes
+        grid_size_options: List of possible grid sizes. If None, auto-detects from data.
 
     Returns:
-        Array of class indices (0, 1, 2, or 3)
+        Array of class indices
     """
     # Convert to numpy if needed
     if isinstance(grid_sizes, torch.Tensor):
         grid_sizes = grid_sizes.detach().cpu().numpy()
+
+    # Auto-detect grid_size_options if not provided
+    if grid_size_options is None:
+        unique_sizes = sorted(set(int(s) for s in grid_sizes))
+        grid_size_options = unique_sizes
 
     # Create mapping
     size_to_idx = {size: idx for idx, size in enumerate(grid_size_options)}
@@ -101,6 +106,21 @@ def grid_size_to_class(grid_sizes, grid_size_options=[2, 4, 8, 16]):
     class_indices = np.array([size_to_idx[int(size)] for size in grid_sizes])
 
     return class_indices
+
+
+def get_num_grid_classes(grid_sizes):
+    """Get the number of unique grid size classes.
+
+    Args:
+        grid_sizes: Array of grid sizes
+
+    Returns:
+        Number of unique classes
+    """
+    if isinstance(grid_sizes, torch.Tensor):
+        grid_sizes = grid_sizes.detach().cpu().numpy()
+
+    return len(set(int(s) for s in grid_sizes))
 
 
 def class_to_grid_size(class_indices, grid_size_options=[2, 4, 8, 16]):
@@ -134,7 +154,12 @@ def compute_composite_score(results, weight_r2=0.7, weight_acc=0.3):
     # Average R² across regression tasks
     regression_tasks = ['rotation', 'scale', 'perspective_x', 'perspective_y']
     r2_scores = [results[task]['r2'] for task in regression_tasks if task in results]
-    avg_r2 = np.mean(r2_scores) if r2_scores else 0.0
+
+    # Clip negative R² values to 0 (negative R² means worse than baseline)
+    # R² can be negative when model performs worse than predicting the mean
+    # For composite score, we treat negative R² as 0 contribution
+    r2_scores_clipped = [max(0.0, r2) for r2 in r2_scores]
+    avg_r2 = np.mean(r2_scores_clipped) if r2_scores_clipped else 0.0
 
     # Grid size accuracy
     grid_accuracy = results.get('grid_size', {}).get('accuracy', 0.0)

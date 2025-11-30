@@ -36,13 +36,48 @@ class MaskedReconstructionLoss(BaseObjective):
         else:
             raise ValueError(f"Unknown loss type: {loss_type}")
 
+    def _expand_patch_mask_to_pixels(self, patch_mask, input_dim):
+        """Expand patch-level mask to pixel-level mask.
+
+        Args:
+            patch_mask: (batch_size, num_patches) - binary mask at patch level
+            input_dim: Total number of pixels (channels * height * width)
+
+        Returns:
+            pixel_mask: (batch_size, input_dim) - binary mask at pixel level
+        """
+        batch_size, num_patches = patch_mask.shape
+
+        # Infer image dimensions (assume square image, single channel for simplicity)
+        # For multi-channel, this still works as we repeat per-pixel
+        num_patches_per_side = int(num_patches ** 0.5)
+        image_size = int(input_dim ** 0.5)
+        patch_size = image_size // num_patches_per_side
+        in_channels = input_dim // (image_size * image_size)
+
+        # Reshape patch mask to 2D grid
+        # (B, num_patches) -> (B, num_patches_h, num_patches_w)
+        patch_mask_2d = patch_mask.view(batch_size, num_patches_per_side, num_patches_per_side)
+
+        # Expand each patch to its full pixel size using repeat_interleave
+        # (B, num_patches_h, num_patches_w) -> (B, H, W)
+        pixel_mask_2d = patch_mask_2d.repeat_interleave(patch_size, dim=1).repeat_interleave(patch_size, dim=2)
+
+        # Expand for channels and flatten
+        # (B, H, W) -> (B, C, H, W) -> (B, input_dim)
+        pixel_mask = pixel_mask_2d.unsqueeze(1).expand(-1, in_channels, -1, -1)
+        pixel_mask = pixel_mask.reshape(batch_size, input_dim)
+
+        return pixel_mask
+
     def forward(self, model_output, target, **kwargs):
         """Compute masked reconstruction loss.
 
         Args:
             model_output: Dictionary from model.forward() containing:
                          - 'reconstruction': Reconstructed output
-                         - 'mask': Binary mask (1 for masked positions)
+                         - 'mask': Binary mask at pixel level (1 for masked positions)
+                         OR 'patch_mask': Binary mask at patch level (for transformer MAE)
             target: Ground truth target tensor
             **kwargs: Additional arguments (unused)
 
@@ -54,7 +89,14 @@ class MaskedReconstructionLoss(BaseObjective):
                 - 'unmasked_loss': Loss on unmasked positions only
         """
         reconstruction = model_output['reconstruction']
+
+        # Check for patch_mask (transformer MAE) or pixel mask
+        patch_mask = model_output.get('patch_mask', None)
         mask = model_output.get('mask', None)
+
+        # If we have a patch mask, expand it to pixel level
+        if patch_mask is not None and mask is None:
+            mask = self._expand_patch_mask_to_pixels(patch_mask, target.shape[1])
 
         # Compute element-wise loss
         elementwise_loss = self.base_loss(reconstruction, target)

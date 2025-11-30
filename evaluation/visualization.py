@@ -7,6 +7,58 @@ import wandb
 from sklearn.decomposition import PCA
 
 
+def _create_mae_composite(original, reconstruction, patch_mask, image_size):
+    """Create composite reconstruction for MAE visualization.
+
+    For MAE, we show: original visible patches + predicted masked patches.
+    This gives a fair view of the model's reconstruction ability.
+
+    Args:
+        original: Original data tensor (batch_size, input_dim)
+        reconstruction: Model reconstruction (batch_size, input_dim)
+        patch_mask: Patch-level mask (batch_size, num_patches), 1=masked
+        image_size: Size of square images
+
+    Returns:
+        composite: Composite reconstruction tensor
+        pixel_mask: Expanded pixel-level mask for visualization
+    """
+    if isinstance(original, torch.Tensor):
+        original = original.detach().cpu()
+    if isinstance(reconstruction, torch.Tensor):
+        reconstruction = reconstruction.detach().cpu()
+    if isinstance(patch_mask, torch.Tensor):
+        patch_mask = patch_mask.detach().cpu()
+
+    batch_size = original.shape[0]
+    input_dim = original.shape[1]
+    num_patches = patch_mask.shape[1]
+
+    # Infer patch size
+    num_patches_per_side = int(num_patches ** 0.5)
+    patch_size = image_size // num_patches_per_side
+
+    # Expand patch mask to pixel level
+    # (B, num_patches) -> (B, num_patches_h, num_patches_w)
+    patch_mask_2d = patch_mask.view(batch_size, num_patches_per_side, num_patches_per_side)
+
+    # Expand to pixel level
+    pixel_mask_2d = patch_mask_2d.repeat_interleave(patch_size, dim=1).repeat_interleave(patch_size, dim=2)
+
+    # Flatten to match input format
+    pixel_mask = pixel_mask_2d.view(batch_size, -1)
+
+    # Expand for channels if needed
+    in_channels = input_dim // (image_size * image_size)
+    if in_channels > 1:
+        pixel_mask = pixel_mask.unsqueeze(1).expand(-1, in_channels, -1).reshape(batch_size, -1)
+
+    # Create composite: original where visible (mask=0), reconstruction where masked (mask=1)
+    composite = original * (1 - pixel_mask) + reconstruction * pixel_mask
+
+    return composite, pixel_mask
+
+
 def visualize_data_samples(data, image_size=None, title="Data Samples", max_samples=64):
     """Visualize data samples as 2D images.
 
@@ -424,8 +476,15 @@ def log_visualizations_to_wandb(model, train_loader, val_loader, device,
 
         # 2. Train reconstructions
         train_mask = train_output.get('mask', None)
+        train_patch_mask = train_output.get('patch_mask', None)
+        # For MAE: create composite reconstruction (original visible + predicted masked)
+        train_recon = train_output['reconstruction']
+        if train_patch_mask is not None and image_size is not None:
+            train_recon, train_mask = _create_mae_composite(
+                train_data, train_recon, train_patch_mask, image_size
+            )
         fig_train_recon = visualize_reconstructions(
-            train_data, train_output['reconstruction'], image_size, train_mask,
+            train_data, train_recon, image_size, train_mask,
             n_samples=8, title="Training Reconstructions"
         )
         vis_dict['reconstructions/train'] = wandb.Image(fig_train_recon)
@@ -433,8 +492,14 @@ def log_visualizations_to_wandb(model, train_loader, val_loader, device,
 
         # 3. Val reconstructions
         val_mask = val_output.get('mask', None)
+        val_patch_mask = val_output.get('patch_mask', None)
+        val_recon = val_output['reconstruction']
+        if val_patch_mask is not None and image_size is not None:
+            val_recon, val_mask = _create_mae_composite(
+                val_data, val_recon, val_patch_mask, image_size
+            )
         fig_val_recon = visualize_reconstructions(
-            val_data, val_output['reconstruction'], image_size, val_mask,
+            val_data, val_recon, image_size, val_mask,
             n_samples=8, title="Validation Reconstructions"
         )
         vis_dict['reconstructions/val'] = wandb.Image(fig_val_recon)

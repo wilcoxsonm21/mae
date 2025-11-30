@@ -1,0 +1,71 @@
+# Configuration for Transformer MAE on checkerboard_memorization dataset
+# Tests memorization vs generalization with 16 grid size classes and translation only
+
+experiment_name: "transformer_mae_checkerboard_memorization"
+seed: 42
+device: "cuda"
+
+# Transformer Masked Autoencoder
+model:
+  type: "transformer_mae"
+  params:
+    latent_dim: 128
+    image_size: 32
+    in_channels: 1
+    patch_size: 4  # 4x4 patches (64 total patches)
+    embed_dim: 384
+    num_heads: 6
+    encoder_depth: 6
+    decoder_depth: 3
+    mlp_ratio: 4
+    dropout: 0.1
+    mask_ratio: 0.75  # Mask 75% of patches
+
+# Masked reconstruction loss
+objective:
+  type: "masked_reconstruction"
+  params:
+    loss_type: "mse"
+    reduction: "mean"
+    predict_all: false
+
+# Checkerboard memorization dataset
+dataset:
+  dataset_name: "checkerboard_memorization"
+  n_samples: 200  # Small dataset for overfitting test
+  image_size: 32
+  train_split: 0.8
+  batch_size: 64
+  normalize: true
+  random_state: 42
+  # Grid sizes: 2, 4, 8, 16 (4 classes) - uses default
+  # Translation: up to ±(cell_size - 1) pixels with rolling
+  noise_level: 0.01
+  return_params: true
+
+# Adam optimizer
+optimizer:
+  type: "adam"
+  lr: 0.0003
+  weight_decay: 0.0
+
+# Training settings
+num_epochs: 100
+checkpoint_dir: "./checkpoints/checkerboard_memorization/transformer_mae"
+visualization_frequency: 10
+
+# Wandb
+wandb_project: "autoencoder-training"
+
+# Downstream evaluation settings
+downstream:
+  enabled: true
+  train_probes: true
+  probe_config:
+    probe_type: "mlp"
+    hidden_dim: 64
+    lr: 0.001
+    weight_decay: 0.0001
+    epochs: 100
+    batch_size: 256
+    patience: 15

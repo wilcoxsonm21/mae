@@ -1,0 +1,57 @@
+experiment_name: cnn_mae_checkerboard_mask_30
+seed: 42
+device: cuda
+model:
+  type: cnn_mae
+  params:
+    latent_dim: 128
+    base_channels: 64
+    dropout: 0.0
+    mask_ratio: 0.30000000000000004
+    in_channels: 1
+objective:
+  type: masked_reconstruction
+  params:
+    loss_type: mse
+    reduction: mean
+    predict_all: false
+dataset:
+  dataset_name: checkerboard
+  n_samples: 15000
+  image_size: 32
+  train_split: 0.8
+  batch_size: 256
+  normalize: true
+  random_state: 42
+  grid_sizes:
+  - 2
+  - 4
+  - 8
+  - 16
+  noise_level: 0.01
+  apply_transforms: true
+  rotation_range: 45.0
+  scale_range:
+  - 0.2
+  - 5.0
+  perspective_range: 0.4
+  return_params: true
+optimizer:
+  type: adam
+  lr: 0.003
+  weight_decay: 0.0
+num_epochs: 20
+checkpoint_dir: ./checkpoints/mask_ratio_study/mask_30
+visualization_frequency: 15
+wandb_project: autoencoder-training
+downstream:
+  enabled: true
+  train_probes: true
+  probe_config:
+    probe_type: mlp
+    hidden_dim: 64
+    lr: 0.001
+    weight_decay: 0.0001
+    epochs: 100
+    batch_size: 256
+    patience: 15

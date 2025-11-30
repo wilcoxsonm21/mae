@@ -37,6 +37,36 @@ class Evaluator:
         """
         self.metrics[name] = metric_fn
 
+    def _expand_patch_mask_to_pixels(self, patch_mask, input_dim):
+        """Expand patch-level mask to pixel-level mask.
+
+        Args:
+            patch_mask: (batch_size, num_patches) - binary mask at patch level
+            input_dim: Total number of pixels (channels * height * width)
+
+        Returns:
+            pixel_mask: (batch_size, input_dim) - binary mask at pixel level
+        """
+        batch_size, num_patches = patch_mask.shape
+
+        # Infer image dimensions (assume square image)
+        num_patches_per_side = int(num_patches ** 0.5)
+        image_size = int(input_dim ** 0.5)
+        patch_size = image_size // num_patches_per_side
+        in_channels = input_dim // (image_size * image_size)
+
+        # Reshape patch mask to 2D grid
+        patch_mask_2d = patch_mask.view(batch_size, num_patches_per_side, num_patches_per_side)
+
+        # Expand each patch to its full pixel size
+        pixel_mask_2d = patch_mask_2d.repeat_interleave(patch_size, dim=1).repeat_interleave(patch_size, dim=2)
+
+        # Expand for channels and flatten
+        pixel_mask = pixel_mask_2d.unsqueeze(1).expand(-1, in_channels, -1, -1)
+        pixel_mask = pixel_mask.reshape(batch_size, input_dim)
+
+        return pixel_mask
+
     @torch.no_grad()
     def evaluate(self, dataloader, objective=None, verbose=True):
         """Evaluate model on a dataset.
@@ -98,9 +128,15 @@ class Evaluator:
                     total_unmasked_loss += obj_output['unmasked_loss'].item() * batch_size
 
             # Compute masked accuracy if applicable
-            if 'mask' in model_output:
+            if 'mask' in model_output or 'patch_mask' in model_output:
                 has_masking = True
-                mask = model_output['mask']
+                # Get mask (pixel-level or expand from patch-level)
+                if 'mask' in model_output:
+                    mask = model_output['mask']
+                else:
+                    # Expand patch mask to pixel level
+                    patch_mask = model_output['patch_mask']
+                    mask = self._expand_patch_mask_to_pixels(patch_mask, target.shape[1])
                 masked_acc = masked_reconstruction_accuracy(reconstruction, target, mask)
                 total_masked_accuracy += masked_acc.item() * batch_size
 

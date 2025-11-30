@@ -8,7 +8,7 @@ from tqdm import tqdm
 import numpy as np
 
 from .probes import LatentProbe, MultiTaskLatentProbe
-from .metrics import regression_metrics, classification_metrics, grid_size_to_class, compute_composite_score
+from .metrics import regression_metrics, classification_metrics, grid_size_to_class, get_num_grid_classes, compute_composite_score
 
 
 class ProbeTrainer:
@@ -30,8 +30,12 @@ class ProbeTrainer:
         self.probes = {}
 
         # Task configuration
-        self.regression_tasks = ['rotation', 'scale', 'perspective_x', 'perspective_y', 'mean_intensity']
+        self.regression_tasks = ['rotation', 'scale', 'perspective_x', 'perspective_y', 'mean_intensity',
+                                  'translation_x', 'translation_y']
         self.classification_tasks = ['grid_size', 'shape', 'color']
+
+        # Dynamic number of classes for grid_size (set during training)
+        self.num_grid_classes = None
 
     @torch.no_grad()
     def extract_latents(self, dataloader):
@@ -110,7 +114,7 @@ class ProbeTrainer:
 
     def train_single_probe(self, task, train_latents, train_targets, val_latents, val_targets,
                           hidden_dim=64, lr=1e-3, weight_decay=1e-4, epochs=100,
-                          batch_size=256, patience=15, verbose=False):
+                          batch_size=256, patience=15, verbose=False, probe_type='mlp'):
         """Train a single probe for one task.
 
         Args:
@@ -119,13 +123,14 @@ class ProbeTrainer:
             train_targets: Training targets
             val_latents: Validation latent codes
             val_targets: Validation targets
-            hidden_dim: Hidden dimension of probe
+            hidden_dim: Hidden dimension of probe (only used for MLP)
             lr: Learning rate
             weight_decay: L2 regularization
             epochs: Maximum epochs
             batch_size: Batch size
             patience: Early stopping patience
             verbose: Whether to show progress
+            probe_type: 'linear' or 'mlp'
 
         Returns:
             Trained probe model
@@ -137,7 +142,8 @@ class ProbeTrainer:
         # Create probe
         if is_classification:
             if task == 'grid_size':
-                output_dim = 4  # Grid sizes: 2, 4, 8, 16
+                # Use dynamically determined number of classes
+                output_dim = self.num_grid_classes if self.num_grid_classes else 4
             elif task == 'shape':
                 output_dim = 7  # 7 shapes: circle, triangle, square, rectangle, pentagon, hexagon, star
             elif task == 'color':
@@ -151,7 +157,8 @@ class ProbeTrainer:
             latent_dim=self.latent_dim,
             hidden_dim=hidden_dim,
             output_dim=output_dim,
-            task_type=task_type
+            task_type=task_type,
+            probe_type=probe_type
         ).to(self.device)
 
         # Loss function
@@ -238,7 +245,7 @@ class ProbeTrainer:
 
     def train_probes(self, train_loader, val_loader, train_params, val_params,
                     hidden_dim=64, lr=1e-3, weight_decay=1e-4, epochs=100,
-                    batch_size=256, patience=15, verbose=True):
+                    batch_size=256, patience=15, verbose=True, probe_type='mlp'):
         """Train probes for all tasks.
 
         Args:
@@ -246,13 +253,14 @@ class ProbeTrainer:
             val_loader: Validation DataLoader
             train_params: Training generation parameters
             val_params: Validation generation parameters
-            hidden_dim: Hidden dimension for probes
+            hidden_dim: Hidden dimension for probes (only used for MLP)
             lr: Learning rate
             weight_decay: L2 regularization
             epochs: Maximum epochs
             batch_size: Batch size for probe training
             patience: Early stopping patience
             verbose: Whether to show progress
+            probe_type: 'linear' or 'mlp'
 
         Returns:
             Dictionary of trained probes
@@ -268,6 +276,12 @@ class ProbeTrainer:
             print(f"Latent dimension: {self.latent_dim}")
             print(f"Train latents: {train_latents.shape}")
             print(f"Val latents: {val_latents.shape}")
+
+        # Determine number of grid classes dynamically
+        if 'grid_size' in train_params:
+            self.num_grid_classes = get_num_grid_classes(train_params['grid_size'])
+            if verbose:
+                print(f"Number of grid size classes: {self.num_grid_classes}")
 
         # Prepare targets
         train_targets_dict = self.prepare_targets(train_params)
@@ -297,7 +311,8 @@ class ProbeTrainer:
                 epochs=epochs,
                 batch_size=batch_size,
                 patience=patience,
-                verbose=verbose
+                verbose=verbose,
+                probe_type=probe_type
             )
 
             self.probes[task] = probe

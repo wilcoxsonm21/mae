@@ -239,6 +239,104 @@ def generate_checkerboard(n_samples, image_size=32, grid_sizes=None,
         return images
 
 
+def generate_checkerboard_memorization(n_samples, image_size=32, grid_sizes=None,
+                                        noise_level=0.01, random_state=42,
+                                        return_params=False):
+    """Generate checkerboard patterns with varying grid sizes and random translation.
+
+    This dataset is designed for testing memorization vs generalization:
+    - 4 different grid sizes (2, 4, 8, 16) that divide 32 evenly to avoid aliasing
+    - Only translation augmentation (no rotation, scale, or perspective)
+    - Translation up to ±(cell_size - 1) pixels using rolling (pattern repeats)
+
+    Args:
+        n_samples: Number of images to generate
+        image_size: Size of square images (default: 32)
+        grid_sizes: List of possible grid sizes (cells per row/col)
+                   Default: [2, 4, 8, 16] (4 classes)
+        noise_level: Amount of random noise to add (default: 0.01)
+        random_state: Random seed
+        return_params: If True, also return generation parameters
+
+    Returns:
+        If return_params=False:
+            numpy array of shape (n_samples, image_size * image_size)
+        If return_params=True:
+            tuple of (images, params_dict) where params_dict contains:
+                - 'grid_size': (n_samples,) array of grid sizes
+                - 'translation_x': (n_samples,) array of x translations in pixels
+                - 'translation_y': (n_samples,) array of y translations in pixels
+                - 'mean_intensity': (n_samples,) array of mean pixel intensities
+    """
+    np.random.seed(random_state)
+    images = []
+
+    # Default grid sizes: 2, 4, 8, 16 (4 classes)
+    # Using sizes that divide 32 evenly to avoid aliasing artifacts
+    if grid_sizes is None:
+        grid_sizes = [2, 4, 8, 16]
+
+    # Storage for generation parameters
+    if return_params:
+        params = {
+            'grid_size': [],
+            'translation_x': [],
+            'translation_y': [],
+            'mean_intensity': []
+        }
+
+    for i in range(n_samples):
+        # Random grid size for each sample
+        grid_size = np.random.choice(grid_sizes)
+
+        # Calculate cell size in pixels
+        cell_size = image_size // grid_size
+
+        # Create base checkerboard pattern (no translation)
+        image = np.zeros((image_size, image_size), dtype=np.float32)
+        for py in range(image_size):
+            for px in range(image_size):
+                cell_x = px // cell_size
+                cell_y = py // cell_size
+                if (cell_x + cell_y) % 2 == 0:
+                    image[py, px] = 1.0
+
+        # Random translation in pixels: up to ±(cell_size - 1)
+        # Use integer translation for clean rolling
+        max_trans = cell_size - 1
+        trans_x = np.random.randint(-max_trans, max_trans + 1)
+        trans_y = np.random.randint(-max_trans, max_trans + 1)
+
+        # Apply translation using roll (wrapping at boundaries since pattern repeats)
+        image = np.roll(image, shift=trans_x, axis=1)  # Roll along x (columns)
+        image = np.roll(image, shift=trans_y, axis=0)  # Roll along y (rows)
+
+        # Add Gaussian noise
+        if noise_level > 0:
+            image += np.random.randn(image_size, image_size) * noise_level
+
+        # Compute mean intensity
+        mean_intensity = np.mean(image)
+
+        images.append(image.flatten())
+
+        # Store generation parameters
+        if return_params:
+            params['grid_size'].append(grid_size)
+            params['translation_x'].append(trans_x)
+            params['translation_y'].append(trans_y)
+            params['mean_intensity'].append(mean_intensity)
+
+    images = np.array(images, dtype=np.float32)
+
+    if return_params:
+        # Convert parameter lists to numpy arrays
+        params_array = {k: np.array(v, dtype=np.float32) for k, v in params.items()}
+        return images, params_array
+    else:
+        return images
+
+
 def generate_radial_pattern(n_samples, image_size=32, n_circles=3,
                            noise_level=0.01, random_state=42):
     """Generate concentric circle patterns.
@@ -668,10 +766,26 @@ def get_dataset(dataset_name, n_samples=10000, image_size=32, train_split=0.8,
             data = result
             generation_params = None
 
+    elif dataset_name == 'checkerboard_memorization':
+        grid_sizes = kwargs.get('grid_sizes', None)  # Default: [2,4,6,...,16]
+        noise_level = kwargs.get('noise_level', 0.01)
+        return_params = kwargs.get('return_params', False)
+
+        result = generate_checkerboard_memorization(
+            n_samples, image_size, grid_sizes,
+            noise_level, random_state, return_params
+        )
+
+        if return_params:
+            data, generation_params = result
+        else:
+            data = result
+            generation_params = None
+
     else:
         raise ValueError(f"Unknown dataset: {dataset_name}. Choose from: "
                         "'fourier_grid', 'checkerboard', 'radial', 'gabor', "
-                        "'random_fourier', 'noise', 'shapes'")
+                        "'random_fourier', 'noise', 'shapes', 'checkerboard_memorization'")
 
     # Normalize if requested
     mean, std = None, None
